@@ -14,25 +14,37 @@ Welcome to your new app.
     <div class="col-md-3">
         <button type="button" @onclick="onClick">Click</button>
         <button type="button" @onclick="refreshOutput">Refresh</button>
+        <button type="button" @onclick="stopProc">Kill</button>
+        <span>@procID</span>
     </div>
 </div>
 
-<RadzenTextArea @bind-Value=@output Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>
+<RadzenTextArea @bind-Value=@(proc.processOutputString) Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>
 
 @code{
-    private string output = "";
     private DispatcherHelper proc;
+    private string procID = "";
+
+    protected override void OnInitialized()
+    {
+        proc = new DispatcherHelper();
+        proc.outputUpdated += () => InvokeAsync(StateHasChanged);
+    }
 
     private void onClick()
     {
-        proc = new DispatcherHelper();
-        proc.StartProcess();       
+        proc.StartProcess();
+        procID = proc.GetProcID().ToString();
     }
 
     private void refreshOutput()
-    {
-        output = proc.processOutput.ToString();
+    {        
         StateHasChanged();
+    }
+
+    private void stopProc()
+    {
+        proc.StopProcess();
     }
 
 }

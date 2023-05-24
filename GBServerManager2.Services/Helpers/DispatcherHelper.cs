@@ -6,6 +6,9 @@ namespace GBServerManager2.Services.Helpers
     public class DispatcherHelper
     {
         public StringBuilder processOutput { get; set; } = new StringBuilder();
+        public string processOutputString { get; set; } = "";
+        public delegate void procOutputUpdateHandler();
+        public event procOutputUpdateHandler outputUpdated;
         private Process _proc { get; set; }
 
         public void StartProcess()
@@ -16,7 +19,7 @@ namespace GBServerManager2.Services.Helpers
                 {
                     FileName = "C:\\Windows\\System32\\cmd.exe",
                     WorkingDirectory = "C:\\Windows\\System32",
-                    Arguments = "/k ipconfig",
+                    Arguments = "/k sc query",
                     //Arguments = String.Format("Multihome={0} Port={1} QueryPort={2} ScheduledShutdownTime={3} -LOCALLOGTIMES -log", server.MultiHome, server.Port, server.QueryPort, server.RestartTime),
                     //WindowStyle = ProcessWindowStyle.Hidden,
                     UseShellExecute = false,
@@ -39,12 +42,33 @@ namespace GBServerManager2.Services.Helpers
 
         }
 
+        public void StopProcess()
+        {
+            _proc.Kill();
+            processOutput.Clear();
+            processOutputString = "";
+        }
 
-        public void OutputRecieved(object sendingProc, DataReceivedEventArgs e)
+        public int GetProcID()
+        {
+            if (!_proc.HasExited)
+            {
+                return _proc.Id;
+            }
+            return 0;
+        }
+
+        private void OutputRecieved(object sendingProc, DataReceivedEventArgs e)
         {
             if (!string.IsNullOrEmpty(e.Data))
             {
+                if(processOutput.Capacity == processOutput.MaxCapacity)
+                {
+                    processOutput.Clear();
+                }
                 processOutput.Append(Environment.NewLine + e.Data);
+                processOutputString = processOutput.ToString();
+                outputUpdated?.Invoke();
             }
 
         }
