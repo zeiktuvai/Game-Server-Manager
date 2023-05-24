@@ -1,5 +1,7 @@
 ﻿@page "/"
 
+@using GBServerManager2.Services.Helpers
+
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, world!</h1>
@@ -7,4 +9,30 @@
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
-@(AppContext.BaseDirectory)
+
+<div class="row">
+    <div class="col-md-3">
+        <button type="button" @onclick="onClick">Click</button>
+        <button type="button" @onclick="refreshOutput">Refresh</button>
+    </div>
+</div>
+
+<RadzenTextArea @bind-Value=@output Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>
+
+@code{
+    private string output = "";
+    private DispatcherHelper proc;
+
+    private void onClick()
+    {
+        proc = new DispatcherHelper();
+        proc.StartProcess();       
+    }
+
+    private void refreshOutput()
+    {
+        output = proc.processOutput.ToString();
+        StateHasChanged();
+    }
+
+}

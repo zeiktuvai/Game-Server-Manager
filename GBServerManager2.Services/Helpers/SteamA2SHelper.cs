@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace GB_ServerManager.Helpers
+namespace GBServerManager2.Services.Helpers
 {
     internal static class SteamA2SHelper
     {

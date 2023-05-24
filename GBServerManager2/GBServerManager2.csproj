@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.11.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GBServerManager2.Models\GBServerManager2.Models.csproj" />
+    <ProjectReference Include="..\GBServerManager2.Services\GBServerManager2.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

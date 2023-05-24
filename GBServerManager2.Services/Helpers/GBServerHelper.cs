@@ -1,12 +1,8 @@
-﻿using System.IO;
-using System.Text.RegularExpressions;
-using GBServerManager2.Models;
-using System;
+﻿using GBServerManager2.Models;
 using System.Text;
-using System.Security.Cryptography;
-using GB_ServerManager.Services;
 
-namespace GB_ServerManager.Helpers
+
+namespace GBServerManager2.Services.Helpers
 {
     internal static class GBServerHelper
     {        

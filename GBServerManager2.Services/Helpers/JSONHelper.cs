@@ -1,10 +1,7 @@
-﻿using System.Text.Json;
-using System.IO;
-using GBServerManager2.Models;
-using System;
-using System.Collections.Generic;
+﻿using GBServerManager2.Models;
+using System.Text.Json;
 
-namespace GB_ServerManager.Helpers
+namespace GBServerManager2.Services.Helpers
 {
     internal static class JSONHelper
     {

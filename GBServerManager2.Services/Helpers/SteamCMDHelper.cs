@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Threading;
 
-namespace GB_ServerManager.Helpers
+namespace GBServerManager2.Services.Helpers
 {
     internal static class SteamCMDHelper
     {

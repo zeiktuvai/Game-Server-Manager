@@ -1,17 +1,12 @@
 ﻿using GBServerManager2.Models;
-using GB_ServerManager.Services;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace GB_ServerManager.Helpers
+namespace GBServerManager2.Services.Helpers
 {
-    internal static class ProcessHelper
+    public static class ProcessHelper
     {
+      
+
         internal static bool StartServer(ServerSetting server)
         {
             if (!string.IsNullOrEmpty(server.MultiHome)

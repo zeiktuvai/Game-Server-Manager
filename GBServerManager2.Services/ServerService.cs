@@ -1,12 +1,12 @@
 ﻿using GBServerManager2.Models;
-using GB_ServerManager.Helpers;
+using GBServerManager2.Services.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GB_ServerManager.Services
+namespace GBServerManager2.Services
 {
     public static class ServerService
     {
