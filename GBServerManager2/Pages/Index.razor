@@ -1,6 +1,9 @@
 ﻿@page "/"
 
+@using Microsoft.JSInterop
 @using GBServerManager2.Services.Helpers
+
+@inject IJSRuntime _js
 
 <PageTitle>Index</PageTitle>
 
@@ -19,16 +22,19 @@ Welcome to your new app.
     </div>
 </div>
 
-<RadzenTextArea @bind-Value=@(proc.processOutputString) Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>
+<RadzenTextArea @ref=textArea @bind-Value=@(proc.processOutputString) Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>
+@*<TextArea @ref=textArea disabled Style="background-color: black; color: white; resize: none; width: 800px; height: 400px">@proc.processOutputString</TextArea>*@
 
 @code{
     private DispatcherHelper proc;
     private string procID = "";
+    private RadzenTextArea textArea;
 
     protected override void OnInitialized()
     {
         proc = new DispatcherHelper();
         proc.outputUpdated += () => InvokeAsync(StateHasChanged);
+        proc.outputUpdated += () => _js.InvokeVoidAsync("scrollToEnd", new object[] { textArea.Element });
     }
 
     private void onClick()
@@ -39,7 +45,9 @@ Welcome to your new app.
 
     private void refreshOutput()
     {        
+
         StateHasChanged();
+        
     }
 
     private void stopProc()
