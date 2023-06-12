@@ -6,9 +6,9 @@ namespace GBServerManager2.Services.Helpers
 {
     internal static class GBServerHelper
     {        
-        internal static ServerSetting FindGBServerExecutable(string FileName)
+        internal static Server FindGBServerExecutable(string FileName)
         {
-            ServerSetting paths = new ServerSetting();
+            Server paths = new Server();
             string GBFolderName = "GroundBranch";
 
             try
@@ -43,10 +43,10 @@ namespace GBServerManager2.Services.Helpers
             }
         }
 
-        internal static ServerSetting RetrieveGBServerProperties(string BasePath, string ServerExePath)
+        internal static Server RetrieveGBServerProperties(string BasePath, string ServerExePath)
         {
             string ServerIniPath = "";
-            ServerSetting NewServer = new ServerSetting();
+            Server NewServer = new Server();
 
             NewServer.ServerId = Guid.NewGuid();
             NewServer.ServerBasePath = BasePath;
@@ -79,7 +79,7 @@ namespace GBServerManager2.Services.Helpers
             return NewServer;
         }  
 
-        internal static ServerSetting RetrieveGBServerProperties(ServerSetting server)
+        internal static Server RetrieveGBServerProperties(Server server)
         {
             var updateServer = server;
             updateServer.Header = server.ServerName.Length < 15 ? server.ServerName.Substring(0, server.ServerName.Length) : server.ServerName.Substring(0, 15);
@@ -145,7 +145,7 @@ namespace GBServerManager2.Services.Helpers
             return null;
         }
 
-        internal static void CreateServerINIFile(ServerSetting server)
+        internal static void CreateServerINIFile(Server server)
         {
             StringBuilder file = new StringBuilder();
             var INIPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig");
@@ -166,7 +166,7 @@ namespace GBServerManager2.Services.Helpers
             File.WriteAllText(INIPath + "\\Server.ini", file.ToString());
         }
 
-        internal static ServerSetting GetServerINIFile(ServerSetting server)
+        internal static Server GetServerINIFile(Server server)
         {
             var ServerIniPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig\\Server.ini");
             string ServerConfigFile = "";
@@ -220,42 +220,6 @@ namespace GBServerManager2.Services.Helpers
             {
                 throw new IOException("Failed to read Server.Ini file");
             }
-        }
-
-        internal static void MigrateServerJSON()
-        {
-            //var _LocalAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            //var _OldFile = _LocalAppDataPath + "\\GB_ServerManager\\ServerList.JSON";
-            //var _NewFile = _LocalAppDataPath + "\\GB-ServerManager\\ServerList.JSON";
-
-            //if (Directory.Exists(_LocalAppDataPath + "\\GB_ServerManager"))
-            //{                
-            //    if (File.Exists(_OldFile))
-            //    {
-            //        try
-            //        {
-            //            Directory.CreateDirectory(_LocalAppDataPath + "\\GB-ServerManager");
-            //            File.Move(_OldFile, _NewFile);                            
-            //            var files = Directory.GetFiles(_LocalAppDataPath + "\\GB_ServerManager");
-            //            foreach (var file in files)
-            //            {
-            //                File.Delete(file);
-            //            }
-            //            Directory.Delete(_LocalAppDataPath + "\\GB_ServerManager");
-            //        }
-            //        catch (Exception)
-            //        {                        
-            //        }
-            //        finally
-            //        {
-            //            AppSettingsHelper.SetDBMigration();
-            //        }
-            //    }        
-            //}
-            //else
-            //{
-            //    AppSettingsHelper.SetDBMigration();
-            //}
         }
     }
 }

@@ -20,12 +20,12 @@ namespace GBServerManager2.Services
             }
             else
             {
-                ServerCache._ServerList = new ServerList { Servers = new List<ServerSetting>() };
-                return new ServerList() { Servers = new List<ServerSetting>() };
+                ServerCache._ServerList = new ServerList { Servers = new List<Server>() };
+                return new ServerList() { Servers = new List<Server>() };
             }
         }
 
-        public static ServerSetting AddGBServer(string basePath, string serverExePath)
+        public static Server AddGBServer(string basePath, string serverExePath)
         {
             if (!string.IsNullOrEmpty(basePath) && !string.IsNullOrEmpty(serverExePath))
             {
@@ -47,14 +47,14 @@ namespace GBServerManager2.Services
             return null;            
         }
 
-        public static bool AddGBServer(ServerSetting server)
+        public static bool AddGBServer(Server server)
         {
             ServerCache._ServerList.Servers.Add(server);
             JSONHelper.SaveServerToFile(ServerCache._ServerList);
             return true;
         }
         
-        public static void UpdateGBServer(ServerSetting server)
+        public static void UpdateGBServer(Server server)
         {
             if (server != null)
             {

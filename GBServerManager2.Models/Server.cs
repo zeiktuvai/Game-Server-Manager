@@ -2,7 +2,7 @@
 
 namespace GBServerManager2.Models
 {
-    public class ServerSetting
+    public class Server
     {
         public Guid ServerId { get; set; }
         public string Header { get; set; }
@@ -20,8 +20,8 @@ namespace GBServerManager2.Models
         public int MaxSpectators { get; set; }
         public string GameRules { get; set; }
         public bool LaunchSeperateLogWindow { get; set; }
-        //[JsonIgnore]
-        //public SolidColorBrush _Status { get; set; }
+        [JsonIgnore]
+        public string _Status { get; set; }
         [JsonIgnore]
         public string _PlayerStats { get; set; }
         [JsonIgnore]

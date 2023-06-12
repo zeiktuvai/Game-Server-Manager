@@ -7,7 +7,7 @@ namespace GBServerManager2.Services.Helpers
     {
       
 
-        internal static bool StartServer(ServerSetting server)
+        internal static bool StartServer(Server server)
         {
             if (!string.IsNullOrEmpty(server.MultiHome)
                 & server.Port != 0
@@ -93,7 +93,7 @@ namespace GBServerManager2.Services.Helpers
             }
         }
 
-        public static bool InitialServerStart(ServerSetting server)
+        public static bool InitialServerStart(Server server)
         {
             try
             {
