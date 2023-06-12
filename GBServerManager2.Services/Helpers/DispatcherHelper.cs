@@ -17,13 +17,15 @@ namespace GBServerManager2.Services.Helpers
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = "C:\\Windows\\System32\\cmd.exe",
-                    WorkingDirectory = "C:\\Windows\\System32",
-                    Arguments = "/k sc query",
+                    FileName = "C:\\GBS-Private\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe",
+                    
+                    WorkingDirectory = "C:\\GBS-Private\\GroundBranch\\Binaries\\Win64",
+                    Arguments = "Multihome={0} Port={1} QueryPort={2} ScheduledShutdownTime={3} -LOCALLOGTIMES -log",
                     //Arguments = String.Format("Multihome={0} Port={1} QueryPort={2} ScheduledShutdownTime={3} -LOCALLOGTIMES -log", server.MultiHome, server.Port, server.QueryPort, server.RestartTime),
                     //WindowStyle = ProcessWindowStyle.Hidden,
                     UseShellExecute = false,
-                    RedirectStandardOutput = true                    
+                    RedirectStandardOutput = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
                 }
 
             };
