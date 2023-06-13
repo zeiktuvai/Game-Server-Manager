@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Hosting.WindowsServices;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 {
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<DialogService>();
 builder.Host.UseWindowsService();
 
 var app = builder.Build();

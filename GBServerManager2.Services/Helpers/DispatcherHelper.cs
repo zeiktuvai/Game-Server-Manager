@@ -68,7 +68,18 @@ namespace GBServerManager2.Services.Helpers
                 {
                     processOutput.Clear();
                 }
-                processOutput.Append(Environment.NewLine + e.Data);
+
+                string css = "";
+                if (e.Data.Contains("Error"))
+                {
+                    css = "style=\"color: red\"";
+                }
+                if (e.Data.Contains("Warning"))
+                {
+                    css = "style=\"color: orange\"";
+                }
+                processOutput.Append($"</br> <span {css}>" + e.Data + "</span>");
+                
                 processOutputString = processOutput.ToString();
                 outputUpdated?.Invoke();
             }

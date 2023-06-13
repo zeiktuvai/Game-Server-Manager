@@ -22,20 +22,24 @@ Welcome to your new app.
     </div>
 </div>
 
-<RadzenTextArea @ref=textArea @bind-Value=@(proc.processOutputString) Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>
+<RadzenHtmlEditor @ref=textArea Disabled=true Style="color: white; height: 400px" @bind-Value=proc.processOutputString >
+    <div style="display: none"></div>
+</RadzenHtmlEditor>
+
+@*<RadzenTextArea @ref=textArea @bind-Value=@(proc.processOutputString) Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>*@
 @*<TextArea @ref=textArea disabled Style="background-color: black; color: white; resize: none; width: 800px; height: 400px">@proc.processOutputString</TextArea>*@
 
 @code{
     //warning text yellow; error text red
     private DispatcherHelper proc;
     private string procID = "";
-    private RadzenTextArea textArea;
+    private RadzenHtmlEditor textArea;
 
     protected override void OnInitialized()
     {
         proc = new DispatcherHelper();
         proc.outputUpdated += () => InvokeAsync(StateHasChanged);
-        proc.outputUpdated += () => _js.InvokeVoidAsync("scrollToEnd", new object[] { textArea.Element });
+        proc.outputUpdated += () => _js.InvokeVoidAsync("scrollToEnd", new object[] { textArea.Element });      
     }
 
     private void onClick()
