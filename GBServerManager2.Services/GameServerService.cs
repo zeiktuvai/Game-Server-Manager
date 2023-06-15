@@ -2,11 +2,11 @@
 using System.Text;
 
 
-namespace GBServerManager2.Services.Helpers
+namespace GBServerManager2.Services
 {
-    internal static class GBServerHelper
-    {        
-        internal static Server FindGBServerExecutable(string FileName)
+    public static class GameServerService
+    {
+        public static Server FindGBServerExecutable(string FileName)
         {
             Server paths = new Server();
             string GBFolderName = "GroundBranch";
@@ -37,7 +37,7 @@ namespace GBServerManager2.Services.Helpers
 
                 return paths;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 throw new FileNotFoundException();
             }
@@ -67,9 +67,9 @@ namespace GBServerManager2.Services.Helpers
                 }
 
                 NewServer = GetServerINIFile(NewServer);
-             
+
             }
-            catch (System.Exception)
+            catch (Exception)
             {
 
                 throw;
@@ -77,7 +77,7 @@ namespace GBServerManager2.Services.Helpers
 
             NewServer.Header = NewServer.ServerName.Substring(0, 15);
             return NewServer;
-        }  
+        }
 
         internal static Server RetrieveGBServerProperties(Server server)
         {
@@ -96,7 +96,7 @@ namespace GBServerManager2.Services.Helpers
             return updateServer;
 
         }
-        
+
         internal static string GetNewGBServerDirectory()
         {
             //if (!string.IsNullOrWhiteSpace((AppSettingsHelper.ReadSettings()).ServerBasePath))
@@ -119,7 +119,7 @@ namespace GBServerManager2.Services.Helpers
             //                foreach (var item in dirs)
             //                {
             //                    path = Path.Combine(_basePath, _serverFolderName + dirNumber);
-                            
+
             //                    if (item.Contains(path))
             //                    {
             //                        dirNumber++;                                   
@@ -151,13 +151,13 @@ namespace GBServerManager2.Services.Helpers
             var INIPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig");
 
             file.AppendLine("[/Script/RBZooKeeper.ZKServer]");
-            file.AppendLine(String.Format("ServerName={0}", server.ServerName));
-            file.AppendLine(String.Format("ServerMOTD={0}", server.ServerMOTD));
-            file.AppendLine(String.Format("MaxPlayers={0}", server.MaxPlayers));
-            file.AppendLine(String.Format("MaxSpectators={0}", server.MaxSpectators));
-            file.AppendLine(String.Format("GameRules={0}", server.GameRules));
-            file.AppendLine(String.Format("ServerPassword={0}", server.ServerPassword));
-            file.AppendLine(String.Format("SpectatorOnlyPassword={0}", server.SpectatorOnlyPassword));
+            file.AppendLine(string.Format("ServerName={0}", server.ServerName));
+            file.AppendLine(string.Format("ServerMOTD={0}", server.ServerMOTD));
+            file.AppendLine(string.Format("MaxPlayers={0}", server.MaxPlayers));
+            file.AppendLine(string.Format("MaxSpectators={0}", server.MaxSpectators));
+            file.AppendLine(string.Format("GameRules={0}", server.GameRules));
+            file.AppendLine(string.Format("ServerPassword={0}", server.ServerPassword));
+            file.AppendLine(string.Format("SpectatorOnlyPassword={0}", server.SpectatorOnlyPassword));
 
             if (!Directory.Exists(INIPath))
             {
@@ -183,7 +183,7 @@ namespace GBServerManager2.Services.Helpers
 
             if (!string.IsNullOrEmpty(ServerConfigFile))
             {
-                var configFile = ServerConfigFile.Split(System.Environment.NewLine);
+                var configFile = ServerConfigFile.Split(Environment.NewLine);
                 foreach (var item in configFile)
                 {
                     if (item.Contains("ServerName="))

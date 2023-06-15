@@ -1,7 +1,7 @@
 ﻿@page "/"
 
 @using Microsoft.JSInterop
-@using GBServerManager2.Services.Helpers
+
 
 @inject IJSRuntime _js
 
@@ -13,51 +13,10 @@ Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
-<div class="row">
-    <div class="col-md-3">
-        <button type="button" @onclick="onClick">Click</button>
-        <button type="button" @onclick="refreshOutput">Refresh</button>
-        <button type="button" @onclick="stopProc">Kill</button>
-        <span>@procID</span>
-    </div>
-</div>
 
-<RadzenHtmlEditor @ref=textArea Disabled=true Style="color: white; height: 400px" @bind-Value=proc.processOutputString >
-    <div style="display: none"></div>
-</RadzenHtmlEditor>
-
-@*<RadzenTextArea @ref=textArea @bind-Value=@(proc.processOutputString) Rows="20" Cols="100" Disabled=true Style="background-color: black; color: white; resize: none" ></RadzenTextArea>*@
-@*<TextArea @ref=textArea disabled Style="background-color: black; color: white; resize: none; width: 800px; height: 400px">@proc.processOutputString</TextArea>*@
 
 @code{
-    //warning text yellow; error text red
-    private DispatcherHelper proc;
-    private string procID = "";
-    private RadzenHtmlEditor textArea;
 
-    protected override void OnInitialized()
-    {
-        proc = new DispatcherHelper();
-        proc.outputUpdated += () => InvokeAsync(StateHasChanged);
-        proc.outputUpdated += () => _js.InvokeVoidAsync("scrollToEnd", new object[] { textArea.Element });      
-    }
 
-    private void onClick()
-    {
-        proc.StartProcess();
-        procID = proc.GetProcID().ToString();
-    }
-
-    private void refreshOutput()
-    {        
-
-        StateHasChanged();
-        
-    }
-
-    private void stopProc()
-    {
-        proc.StopProcess();
-    }
 
 }

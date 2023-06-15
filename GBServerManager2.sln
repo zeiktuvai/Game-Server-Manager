@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GBServerManager2.Models", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GBServerManager2.Services", "GBServerManager2.Services\GBServerManager2.Services.csproj", "{5958DE75-DB07-4322-AD5A-2AF0CE16AB18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GBServerManager2.Data", "GBServerManager2.Data\GBServerManager2.Data.csproj", "{DAC02019-6C8F-4A27-A940-C8E1769477CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GBServerManager2.Data", "GBServerManager2.Data\GBServerManager2.Data.csproj", "{DAC02019-6C8F-4A27-A940-C8E1769477CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

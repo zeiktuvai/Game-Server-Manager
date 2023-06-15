@@ -29,7 +29,7 @@ namespace GBServerManager2.Services
         {
             if (!string.IsNullOrEmpty(basePath) && !string.IsNullOrEmpty(serverExePath))
             {
-                var Server = GBServerHelper.RetrieveGBServerProperties(basePath, serverExePath);
+                var Server = GameServerService.RetrieveGBServerProperties(basePath, serverExePath);
                 var ExistingServers = GetGBServers().Servers;
 
                 if (!ExistingServers.Exists(s => s.ServerBasePath == basePath))

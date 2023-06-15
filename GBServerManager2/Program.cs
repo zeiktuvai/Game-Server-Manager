@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Radzen;
+using GBServerManager2.Models.Options;
+using GBServerManager2.Data;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 {
@@ -13,6 +15,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<DialogService>();
+builder.Services.Configure<LiteDbOptions>(builder.Configuration.GetSection("LiteDbOptions"));
+builder.Services.AddSingleton<LiteDbContext>();
 builder.Host.UseWindowsService();
 
 var app = builder.Build();

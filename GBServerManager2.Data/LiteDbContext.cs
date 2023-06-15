@@ -1,12 +1,13 @@
 ﻿using LiteDB;
 using Microsoft.Extensions.Options;
+using GBServerManager2.Models.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GBServerManager2.Data.Data
+namespace GBServerManager2.Data
 {
     public class LiteDbContext
     {
@@ -14,8 +15,8 @@ namespace GBServerManager2.Data.Data
 
         public LiteDbContext(IOptions<LiteDbOptions> options)
         {
-
+            Database = new LiteDatabase(options.Value.DbLocation);
         }
-        
+
     }
 }
