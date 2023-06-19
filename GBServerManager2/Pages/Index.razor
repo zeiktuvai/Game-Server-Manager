@@ -2,21 +2,61 @@
 
 @using Microsoft.JSInterop
 
-
 @inject IJSRuntime _js
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Game Server Manager</PageTitle>
 
-<h1>Hello, world!</h1>
+<h2>Installed Servers</h2>
 
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 g-3">
+    @foreach (var srv in servers.Servers)
+    {
+        <div class="col">
+            <div class="card bg-list-item">
+                <div class="row g-0">
+                    <div class="col" style="max-width: 5px; background-color: red" />
+                    <div class="col-md-4">
+                        <div class="card-body">
+                            <h3>@srv.ServerName</h3>
+                            <span>@srv._PlayerStats</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-flex flex-column justify-content-center">
+                        <span>Port:</span>
+                        <span>Query Port:</span>
+                        <span>Restart:</span>
+                    </div>
+                    <div class="col-md-2 d-flex flex-column justify-content-center">
+                        <span>@srv.Port</span>
+                        <span>@srv.QueryPort</span>
+                        <span>@srv.RestartTime hr</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="col">
+        <div class="card bg-list-item" >
+            <div class="card-body">
+                <div class="d-flex flex-column align-items-center">
+                    <span class="oi oi-plus mb-1 add-server-icon" aria-hidden="true"></span>
+                    <p class="card-text">Add Server</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 @code{
+    ServerList servers = new();
 
+    protected override void OnInitialized()
+    {
+        servers.Servers = new List<Server>()
+        { new Server {ServerName = "Test 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "Players: 0/8"},
+        new Server {ServerName = "Test 2", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "Players: 0/16"}};
 
-
+    }
 }
