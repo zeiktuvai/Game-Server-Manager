@@ -1,10 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using GBServerManager2.Models.Enums;
+using System.Text.Json.Serialization;
 
 namespace GBServerManager2.Models
 {
     public class Server
     {
         public Guid ServerId { get; set; }
+        public ServerTypeEnum ServerType { get; set; }
         public string Header { get; set; }
         public string ServerBasePath { get; set; }
         public string ServerName { get; set; }

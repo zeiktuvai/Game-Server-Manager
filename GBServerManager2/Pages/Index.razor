@@ -13,23 +13,56 @@
     {
         <div class="col">
             <div class="card bg-list-item">
-                <div class="row g-0">
-                    <div class="col" style="max-width: 5px; background-color: red" />
-                    <div class="col-md-4">
-                        <div class="card-body">
-                            <h3>@srv.ServerName</h3>
-                            <span>@srv._PlayerStats</span>
+                <div class="card-body" style="height: 145px">
+                    <div class="row">
+
+                        <div style="width: 5px; height: 144px; border-radius: 5px; margin: -16px 0px 0px -5px; padding: 0px; background-color: red"></div>
+
+                        <div class="col-md-12">
+                            <div class="row g-0">
+                                <div class="col-md-11 col-11">
+                                    <h3>@(srv.ServerName.Length > 20 ? srv.ServerName.Substring(0, 20).Trim() + "..." : srv.ServerName)</h3>
+                                </div>
+                                <div class="col-md-1 col-1">
+                                    <img src="assets/groundBranch.png" style="width: 30px;"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start">
+                                    <Tooltip Text="Current player count">
+                                        <i class="bi bi-person-fill me-2" style="color: var(--color-offWhite);">
+                                        </i><span>@srv._PlayerStats</span>
+                                    </Tooltip>
+                                    <Tooltip Text="Server Port">
+                                        <svg style="color: var(--color-offWhite);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ethernet me-1" viewBox="0 0 16 16">
+                                            <path d="M14 13.5v-7a.5.5 0 0 0-.5-.5H12V4.5a.5.5 0 0 0-.5-.5h-1v-.5A.5.5 0 0 0 10 3H6a.5.5 0 0 0-.5.5V4h-1a.5.5 0 0 0-.5.5V6H2.5a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5ZM3.75 11h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25Zm2 0h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5ZM9.75 11h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5Z" />
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2ZM1 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2Z" />
+                                        </svg>
+                                        <span>@srv.Port</span>
+                                    </Tooltip>
+                                    <Tooltip Text="Query Port">
+                                        <svg style="color: var(--color-offWhite);" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-ethernet me-1" viewBox="0 0 16 16">
+                                            <path d="M14 13.5v-7a.5.5 0 0 0-.5-.5H12V4.5a.5.5 0 0 0-.5-.5h-1v-.5A.5.5 0 0 0 10 3H6a.5.5 0 0 0-.5.5V4h-1a.5.5 0 0 0-.5.5V6H2.5a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5ZM3.75 11h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25Zm2 0h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5ZM9.75 11h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25Zm1.75.25a.25.25 0 0 1 .25-.25h.5a.25.25 0 0 1 .25.25v1.5a.25.25 0 0 1-.25.25h-.5a.25.25 0 0 1-.25-.25v-1.5Z" />
+                                            <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2ZM1 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2Z" />
+                                        </svg>
+                                        <span>@srv.QueryPort</span>
+                                    </Tooltip>
+                                    <Tooltip Text="Automatic restart timer">
+                                        <i class="bi bi-clock-history me-1" style="color: var(--color-offWhite);"></i>
+                                        <span>@srv.RestartTime hr</span>
+                                    </Tooltip>
+                                </RadzenStack>
+                            </div>
+                        <div class="row">
+                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" class="mt-3">
+                                <RadzenButton Icon="play_arrow" ButtonStyle="ButtonStyle.Success" />
+                                <RadzenButton Icon="refresh" ButtonStyle="ButtonStyle.Info" />
+                                <RadzenButton Icon="stop" ButtonStyle="ButtonStyle.Warning" />
+                                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Info" />
+                                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                            </RadzenStack>
                         </div>
-                    </div>
-                    <div class="col-md-3 d-flex flex-column justify-content-center">
-                        <span>Port:</span>
-                        <span>Query Port:</span>
-                        <span>Restart:</span>
-                    </div>
-                    <div class="col-md-2 d-flex flex-column justify-content-center">
-                        <span>@srv.Port</span>
-                        <span>@srv.QueryPort</span>
-                        <span>@srv.RestartTime hr</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,12 +70,14 @@
     }
     <div class="col">
         <div class="card bg-list-item" >
+            <button class="btn">
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center">
                     <span class="oi oi-plus mb-1 add-server-icon" aria-hidden="true"></span>
                     <p class="card-text">Add Server</p>
                 </div>
             </div>
+            </button>
         </div>
     </div>
 </div>
@@ -55,8 +90,9 @@
     protected override void OnInitialized()
     {
         servers.Servers = new List<Server>()
-        { new Server {ServerName = "Test 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "Players: 0/8"},
-        new Server {ServerName = "Test 2", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "Players: 0/16"}};
+        { new Server {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.GroundBranch},
+        new Server {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
+        ServerType = ServerTypeEnum.GroundBranch}};
 
     }
 }
