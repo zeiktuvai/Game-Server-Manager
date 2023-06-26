@@ -6,9 +6,9 @@ namespace GBServerManager2.Services
 {
     public static class GameServerService
     {
-        public static Server FindGBServerExecutable(string FileName)
+        public static GBServer FindGBServerExecutable(string FileName)
         {
-            Server paths = new Server();
+            GBServer paths = new GBServer();
             string GBFolderName = "GroundBranch";
 
             try
@@ -43,10 +43,10 @@ namespace GBServerManager2.Services
             }
         }
 
-        internal static Server RetrieveGBServerProperties(string BasePath, string ServerExePath)
+        internal static GBServer RetrieveGBServerProperties(string BasePath, string ServerExePath)
         {
             string ServerIniPath = "";
-            Server NewServer = new Server();
+            GBServer NewServer = new GBServer();
 
             NewServer.ServerId = Guid.NewGuid();
             NewServer.ServerBasePath = BasePath;
@@ -79,7 +79,7 @@ namespace GBServerManager2.Services
             return NewServer;
         }
 
-        internal static Server RetrieveGBServerProperties(Server server)
+        internal static GBServer RetrieveGBServerProperties(GBServer server)
         {
             var updateServer = server;
             updateServer.Header = server.ServerName.Length < 15 ? server.ServerName.Substring(0, server.ServerName.Length) : server.ServerName.Substring(0, 15);
@@ -145,7 +145,7 @@ namespace GBServerManager2.Services
             return null;
         }
 
-        internal static void CreateServerINIFile(Server server)
+        internal static void CreateServerINIFile(GBServer server)
         {
             StringBuilder file = new StringBuilder();
             var INIPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig");
@@ -166,7 +166,7 @@ namespace GBServerManager2.Services
             File.WriteAllText(INIPath + "\\Server.ini", file.ToString());
         }
 
-        internal static Server GetServerINIFile(Server server)
+        internal static GBServer GetServerINIFile(GBServer server)
         {
             var ServerIniPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig\\Server.ini");
             string ServerConfigFile = "";

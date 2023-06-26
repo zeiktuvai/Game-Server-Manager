@@ -56,8 +56,8 @@
                         <div class="row">
                             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" class="mt-3">
                                 <RadzenButton Icon="play_arrow" ButtonStyle="ButtonStyle.Success" />
+                                <RadzenButton Icon="stop" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="refresh" ButtonStyle="ButtonStyle.Info" />
-                                <RadzenButton Icon="stop" ButtonStyle="ButtonStyle.Warning" />
                                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" />
                             </RadzenStack>
@@ -89,9 +89,9 @@
 
     protected override void OnInitialized()
     {
-        servers.Servers = new List<Server>()
-        { new Server {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.GroundBranch},
-        new Server {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
+        servers.Servers = new List<GBServer>()
+        { new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.GroundBranch},
+        new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
         ServerType = ServerTypeEnum.GroundBranch}};
 
     }

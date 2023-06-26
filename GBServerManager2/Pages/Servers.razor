@@ -1,4 +1,6 @@
-﻿@using GBServerManager2.Services.Helpers
+﻿@page "/servers"
+
+@using GBServerManager2.Services.Helpers
 
 <h3>Servers</h3>
 
@@ -12,7 +14,7 @@
     </div>
 </div>
 
-<RadzenHtmlEditor @ref=textArea Disabled=true Style="color: white; height: 400px" @bind-Value=proc.processOutputString>
+<RadzenHtmlEditor @ref=textArea Disabled=true Style="color: white; height: 400px" @bind-Value=server.serverProc.processOutputString>
     <div style="display: none"></div>
 </RadzenHtmlEditor>
 
@@ -21,21 +23,21 @@
 
 @code {
     //warning text yellow; error text red
-    private DispatcherHelper proc;
+    private GBServer server;
     private string procID = "";
     private RadzenHtmlEditor textArea;
 
     protected override void OnInitialized()
     {
-        proc = new DispatcherHelper();
-        proc.outputUpdated += () => InvokeAsync(StateHasChanged);
+        server = new GBServer() { ServerBasePath = "C:\\GBS-Private\\GroundBranch\\Binaries\\Win64\\", ServerPath = "C:\\GBS-Private\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe",
+        MultiHome = "0.0.0.0", Port = 7776, QueryPort = 27614, RestartTime = 12};
+        server.serverProc.outputUpdated += () => InvokeAsync(StateHasChanged);
         //proc.outputUpdated += () => _js.InvokeVoidAsync("scrollToEnd", new object[] { textArea.Element });
     }
 
     private void onClick()
     {
-        proc.StartProcess();
-        procID = proc.GetProcID().ToString();
+        server._ServerPID = server.serverProc.StartServerProcess(server, server.GetProcessStartArgs());
     }
 
     private void refreshOutput()
@@ -47,6 +49,6 @@
 
     private void stopProc()
     {
-        proc.StopProcess();
+        server.serverProc.StopProcess();
     }
 }

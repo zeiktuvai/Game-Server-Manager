@@ -5,7 +5,7 @@ namespace GBServerManager2.Services.Helpers
 {
     internal static class SteamCMDHelper
     {
-        internal static int DownloadUpdateNewServer(Server server)
+        internal static int DownloadUpdateNewServer(GBServer server)
         {
             if (!string.IsNullOrWhiteSpace(server.ServerBasePath))
             {
