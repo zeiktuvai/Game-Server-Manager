@@ -46,7 +46,12 @@ namespace GBServerManager2.Models
         /// <returns></returns>
         public int StartServerProcess(GameServer server, string args)
         {
-            var proc = new Process
+            //if (!string.IsNullOrEmpty(server.MultiHome)
+            //    & server.Port != 0
+            //    & server.QueryPort != 0
+            //    & server.RestartTime != 0)
+
+                var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -140,6 +145,35 @@ namespace GBServerManager2.Models
                         //ProcessHelper.StartServer(server);
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Checks the provided PID to see if a process is running under that PID.
+        /// </summary>
+        /// <param name="serverPID"></param>
+        /// <returns>Returns True if the process is running, otherwise it returns False.</returns>
+        public static bool GetServerProcessStatus(int serverPID)
+        {
+            Process proc = null;
+
+            try
+            {
+                proc = Process.GetProcessById(serverPID);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+
+            if (proc != null && !proc.HasExited)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
