@@ -18,6 +18,11 @@
     top: -2px;
 }
 
+.nav-icon {
+    font-size: 16pt;
+    margin-right: 12px;
+}
+
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
