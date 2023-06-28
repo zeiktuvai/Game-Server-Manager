@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GBServerManager2.Services
 {
-    public static class GameServerService
+    public static class GBServerService
     {
         public static GBServer FindGBServerExecutable(string FileName)
         {
@@ -122,8 +122,8 @@ namespace GBServerManager2.Services
 
             //                    if (item.Contains(path))
             //                    {
-            //                        dirNumber++;                                   
-            //                    }                                
+            //                        dirNumber++;
+            //                    }
             //                }
 
             //                path = Path.Combine(_basePath, _serverFolderName + dirNumber);
