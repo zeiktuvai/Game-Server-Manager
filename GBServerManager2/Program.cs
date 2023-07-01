@@ -17,6 +17,8 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<DialogService>();
 builder.Services.Configure<LiteDbOptions>(builder.Configuration.GetSection("LiteDbOptions"));
 builder.Services.AddSingleton<LiteDbContext>();
+builder.Services.AddScoped<ApplicationSettingsRepository>();
+builder.Services.AddScoped<ApplicationSettingsService>();
 builder.Host.UseWindowsService();
 
 var app = builder.Build();

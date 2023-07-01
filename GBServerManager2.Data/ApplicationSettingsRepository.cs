@@ -1,4 +1,5 @@
-﻿using GBServerManager2.Models.Options;
+﻿using GBServerManager2.Models;
+using GBServerManager2.Models.Options;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -17,15 +18,20 @@ namespace GBServerManager2.Data
             _db = dbContext.Database;
         }
 
-        public IEnumerable<AppSetting> GetApplicationSettings()
+        public ApplicationSettings GetApplicationSettings()
         {
-            var result = _db.GetCollection<AppSetting>("ApplicationSettings").FindAll();
-            return result;
+            var coll = _db.GetCollection<ApplicationSettings>(GlobalConstants.AppSettingsCollectionName).FindAll();
+            return coll.Any() ? coll.First() : null;
         }
 
-        public int saveApplicationSetting(AppSetting setting)
+        public int AddApplicationSettings(ApplicationSettings setting)
+        {           
+            return _db.GetCollection<ApplicationSettings>(GlobalConstants.AppSettingsCollectionName).Insert(setting);
+        }
+
+        public bool UpdateApplicationSettings(ApplicationSettings setting)
         {
-            return _db.GetCollection<AppSetting>("ApplicationSettings").Insert(setting);
+            return _db.GetCollection<ApplicationSettings>(GlobalConstants.AppSettingsCollectionName).Update(setting);
         }
     }
 }

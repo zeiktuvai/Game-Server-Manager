@@ -1,7 +1,21 @@
 ﻿@page "/settings"
 
+@using GBServerManager2.Models.Options
+@inject ApplicationSettingsService _ass
+
 <h3>Settings</h3>
+
+<button type="button" @onclick="TestSettings" >Save</button>
 
 @code {
 
+
+
+    private void TestSettings()
+    {
+        AppSetting set = new() { Key = "DB Loc", Value = "Here" };
+        ApplicationSettings settings = new() { ApplicationName = "Game Server Manager", Version = "1.0", Settings = new List<AppSetting>() { set } };
+
+        var temp = _ass.GetAllApplicationSettings();
+    }
 }
