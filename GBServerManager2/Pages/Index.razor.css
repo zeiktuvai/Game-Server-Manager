@@ -2,10 +2,6 @@
     color: var(--color-offWhite);
 }
 
-h2, h3, h4 {
-    color: var(--color-offWhite);
-}
-
 p {
     color: var(--color-offWhite) !important;
 }
