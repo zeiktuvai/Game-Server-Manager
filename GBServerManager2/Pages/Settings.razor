@@ -28,7 +28,7 @@
             </Tooltip>
     </div>
     <div class="col-md-9">
-            <RadzenTextBox @bind-Value="serverPath" class="@(string.IsNullOrWhiteSpace(serverPath) ? "bg-warning w-75" : "w-75")"></RadzenTextBox>
+            <RadzenTextBox @bind-Value="serverPath" Disabled=true class="@(string.IsNullOrWhiteSpace(serverPath) ? "bg-warning w-75" : "w-75")"></RadzenTextBox>
     </div>
 </div>
 
