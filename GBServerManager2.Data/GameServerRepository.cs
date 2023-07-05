@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using GBServerManager2.Models;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,32 @@ namespace GBServerManager2.Data
             _db = dbContext.Database;
         }
 
+        public IEnumerable<GameServer> GetAllGameServers()
+        {
+            return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).FindAll();
+        }
+
+        public GameServer GetGameServer(Guid serverId) 
+        { 
+            return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).FindOne(
+                s => s.ServerId == serverId);
+        }
+
+        public int AddGameServer(GameServer server)
+        {
+            return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Insert(server);
+        }
+
+        public bool UpdatedGameServer(GameServer server)
+        {
+            return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Update(server);
+        }
+
+        public void DeleteGameServer(GameServer server)
+        {
+            //var srvr = GetGameServer(server.ServerId);
+            _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Delete(server.ServerId);
+        }
 
     }
 }
