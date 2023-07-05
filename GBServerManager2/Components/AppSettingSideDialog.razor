@@ -1,4 +1,6 @@
 ﻿@using GBServerManager2.Services.Helpers;
+@using GBServerManager2.Models.Options;
+
 <span>Path to install servers: </span>
 <RadzenTextBox @bind-Value="ServerPath" class="@(pathIsValid == false ? "bg-warning w-100" : "w-100")"/>
 
@@ -10,14 +12,31 @@
 @code {
     [Inject] DialogService _ds { get; set; }
     [Inject] ApplicationSettingsService _ass { get; set; }
+    [Parameter] public ApplicationSettings appSetting { get; set; }
     private string ServerPath;
     private bool pathIsValid = true;
+
+    protected override void OnInitialized()
+    {
+        ServerPath = appSetting.Settings.FirstOrDefault(s => s.Key == GlobalConstants.ServerBasePath)?.Value ?? "";
+    }
 
     private void SaveBasePath()
     {
         if (!string.IsNullOrWhiteSpace(ServerPath) && FileHelper.CheckDirectoryExists(ServerPath))
         {
-            
+            pathIsValid = true;
+            var setting = appSetting.Settings.FirstOrDefault(s => s.Key == GlobalConstants.ServerBasePath);
+            if (setting != null)
+            {
+                appSetting.Settings.FirstOrDefault(s => s.Key == GlobalConstants.ServerBasePath).Value = ServerPath;
+            }
+            else
+            {
+                appSetting.Settings.Add(new AppSetting { Key = GlobalConstants.ServerBasePath, Value = ServerPath});                
+            }
+            _ass.SaveApplicationSetting(appSetting);
+            _ds.CloseSide();
         }
         else
         {

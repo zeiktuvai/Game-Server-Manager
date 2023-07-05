@@ -3,6 +3,6 @@
     public enum ServerTypeEnum
     {
         GroundBranch = 0,
-        OperationHarshDoorstop = 1
+        OperationHarshDoorstop = 1,
     }
 }

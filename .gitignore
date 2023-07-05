@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /GBServerManager2/LiteDb/Server.db
+/GBServerManager2/LiteDb/Server-log.db

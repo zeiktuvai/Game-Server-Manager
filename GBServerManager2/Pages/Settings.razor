@@ -38,24 +38,22 @@
 </div>
 
 @code {
+    private ApplicationSettings settings;
     private string serverPath;
 
-    //protected override void OnInitialized()
-    //{
-
-    //}
-
-    private void TestSettings()
+    protected override void OnInitialized()
     {
-
-        AppSetting set = new() { Key = "DB Loc", Value = "Here" };
-        ApplicationSettings settings = new() { ApplicationName = "Game Server Manager", Version = "1.0", Settings = new List<AppSetting>() { set } };
-
-        var temp = _ass.GetAllApplicationSettings();
+        settings = _ass.GetApplicationSettings();
+        serverPath = settings.Settings.Count > 0 ? settings.Settings.FirstOrDefault(s => s.Key == GlobalConstants.ServerBasePath)?.Value ?? "" 
+            : "";
     }
 
     async Task OpenDialog()
     {
-        await _ds.OpenSideAsync<AppSettingSideDialog>("Edit Settings", options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true });
+        await _ds.OpenSideAsync<AppSettingSideDialog>("Edit Settings", new Dictionary<string, object> {{ "appSetting", settings}},
+            options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true });
+
+        serverPath = settings.Settings.FirstOrDefault(s => s.Key == GlobalConstants.ServerBasePath).Value ?? "";
+        StateHasChanged();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GBServerManager2.Data;
+using GBServerManager2.Models.Enums;
 using GBServerManager2.Models.Options;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,28 @@ namespace GBServerManager2.Services
             asr = appSettingsRepo;
         }
 
-        public ApplicationSettings GetAllApplicationSettings()
+        public ApplicationSettings GetApplicationSettings()
         {
-            return asr.GetApplicationSettings() ?? new ApplicationSettings() { ApplicationName = "Game Server Manager", Version = "1.0", 
-                Settings = new List<AppSetting>()};
+            return asr.GetSpecificApplicationSetting(SettingsNameEnum.ApplicationSettings) ?? 
+                new ApplicationSettings() { SettingsGroupName = SettingsNameEnum.ApplicationSettings,
+                Version = "1.0", Settings = new List<AppSetting>()};
+        }
+
+        public bool SaveApplicationSetting(ApplicationSettings setting)
+        {
+            try
+            {
+                if (!asr.UpdateApplicationSettings(setting))
+                {
+                    asr.AddApplicationSettings(setting);
+                    return true;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;                
+            }
         }
 
     }
