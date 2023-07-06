@@ -1,0 +1,38 @@
+﻿@using GBServerManager2.Services.Helpers;
+@using GBServerManager2.Models.Options;
+
+<div class="rz-p-4 rz-text-align-center">
+    <RadzenSelectBar @bind-Value="isExistingServer" TValue="bool" class="mb-5">
+        <Items>
+            <RadzenSelectBarItem Text="New" Value="false" />
+            <RadzenSelectBarItem Text="Existing" Value="true" />
+        </Items>
+    </RadzenSelectBar>
+</div>
+
+
+
+<div class="mt-2 d-flex justify-content-end">
+    <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" @onclick="SaveBasePath">Save</button>
+    <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
+</div>
+
+@code {
+    [Inject] DialogService _ds { get; set; }
+    //[Inject] GameServerService _gss { get; set; }
+    private bool isExistingServer = false;
+
+    //[Parameter] public ApplicationSettings appSetting { get; set; }
+
+    private bool pathIsValid = true;
+
+    protected override void OnInitialized()
+    {
+
+    }
+
+    private void SaveBasePath()
+    {
+
+    }
+}

@@ -2,7 +2,7 @@
 @using GBServerManager2.Models.Options;
 
 <span>Path to install servers: </span>
-<RadzenTextBox @bind-Value="ServerPath" class="@(pathIsValid == false ? "bg-warning w-100" : "w-100")"/>
+<RadzenTextBox @bind-Value="ServerPath" class="@(pathIsValid == false ? "bg-warning w-100" : "w-100")" />
 
 <div class="mt-2 d-flex justify-content-end">
     <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" @onclick="SaveBasePath">Save</button>
@@ -33,7 +33,7 @@
             }
             else
             {
-                appSetting.Settings.Add(new AppSetting { Key = GlobalConstants.ServerBasePath, Value = ServerPath});                
+                appSetting.Settings.Add(new AppSetting { Key = GlobalConstants.ServerBasePath, Value = ServerPath });
             }
             _ass.SaveApplicationSetting(appSetting);
             _ds.CloseSide();

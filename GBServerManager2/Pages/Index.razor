@@ -1,5 +1,7 @@
 ﻿@page "/"
 
+@inject DialogService _ds
+
 <h2>Installed Servers</h2>
 
 <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 g-3">
@@ -66,7 +68,7 @@
     }
     <div class="col">
         <div class="card bg-list-item" >
-            <button class="btn">
+            <button class="btn" @onclick="OpenAddDialog">
             <div class="card-body">
                 <div class="d-flex flex-column align-items-center">
                     <span class="oi oi-plus mb-1 add-server-icon" aria-hidden="true"></span>
@@ -90,5 +92,11 @@
         new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
         ServerType = ServerTypeEnum.GroundBranch}};
 
+    }
+
+    async Task OpenAddDialog()
+    {
+        await _ds.OpenSideAsync<AddServerSideDialog>("Add Server",
+            options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true });
     }
 }
