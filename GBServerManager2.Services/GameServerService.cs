@@ -1,4 +1,5 @@
-﻿using GBServerManager2.Models;
+﻿using GBServerManager2.Data;
+using GBServerManager2.Models;
 using GBServerManager2.Services.Helpers;
 using System;
 using System.Collections.Generic;
@@ -8,25 +9,23 @@ using System.Threading.Tasks;
 
 namespace GBServerManager2.Services
 {
-    public static class ServerService
+    public class GameServerService
     {
-        public static ServerList GetGameServers()
+        public ServerList Servers = new ServerList();
+        private GameServerRepository _gsr { get; set; }
+
+        public GameServerService(GameServerRepository gsr)
         {
-            //var _serverList = JSONHelper.ReadServersFromFile();
-            //if (_serverList != null && _serverList.Servers != null)
-            //{
-            //    ServerCache._ServerList = _serverList;
-            //    return _serverList;
-            //}
-            //else
-            //{
-            //    ServerCache._ServerList = new ServerList { Servers = new List<GBServer>() };
-            //    return new ServerList() { Servers = new List<GBServer>() };
-            //}
-            return null;
+            _gsr = gsr;
+            UpdateGameServers();
         }
 
-        public static GBServer AddGameServer(string basePath, string serverExePath)
+        private void UpdateGameServers()
+        {
+            Servers.Servers = _gsr.GetAllGameServers().ToList();
+        }
+
+        public static GBServer AddNewGameServer(string basePath, string serverExePath)
         {
             //if (!string.IsNullOrEmpty(basePath) && !string.IsNullOrEmpty(serverExePath))
             //{
