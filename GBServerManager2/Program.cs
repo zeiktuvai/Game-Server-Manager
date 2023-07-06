@@ -19,6 +19,8 @@ builder.Services.Configure<LiteDbOptions>(builder.Configuration.GetSection("Lite
 builder.Services.AddSingleton<LiteDbContext>();
 builder.Services.AddScoped<ApplicationSettingsRepository>();
 builder.Services.AddScoped<ApplicationSettingsService>();
+builder.Services.AddScoped<GameServerRepository>();
+builder.Services.AddSingleton<GameServerService>();
 builder.Host.UseWindowsService();
 
 var app = builder.Build();
