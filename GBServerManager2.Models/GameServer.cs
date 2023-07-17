@@ -23,7 +23,8 @@ namespace GBServerManager2.Models
         public GameServerProcess serverProc { get; set; }
         [BsonIgnore]
         public int _ServerPID { get; set; }
-
+        [BsonIgnore]
+        public string _PlayerStats { get; set; }
         public GameServer()
         {
             serverProc = new GameServerProcess();

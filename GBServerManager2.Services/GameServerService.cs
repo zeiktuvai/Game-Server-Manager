@@ -1,5 +1,6 @@
 ﻿using GBServerManager2.Data;
 using GBServerManager2.Models;
+using GBServerManager2.Models.Enums;
 using GBServerManager2.Services.Helpers;
 using System;
 using System.Collections.Generic;
@@ -25,26 +26,30 @@ namespace GBServerManager2.Services
             Servers.Servers = _gsr.GetAllGameServers().ToList();
         }
 
-        public static GBServer AddNewGameServer(string basePath, string serverExePath)
+        public bool AddNewGameServer(string basePath, string serverExePath, ServerTypeEnum serverType)
         {
-            //if (!string.IsNullOrEmpty(basePath) && !string.IsNullOrEmpty(serverExePath))
-            //{
-            //    var Server = GBServerService.RetrieveGBServerProperties(basePath, serverExePath);
-            //    var ExistingServers = GetGBServers().Servers;
+            if (serverType == ServerTypeEnum.Ground_Branch)
+            {
+                //if (!string.IsNullOrEmpty(basePath) && !string.IsNullOrEmpty(serverExePath))
+                //{
+                //    var Server = GBServerService.RetrieveGBServerProperties(basePath, serverExePath);
+                //    var ExistingServers = GetGBServers().Servers;
 
-            //    if (!ExistingServers.Exists(s => s.ServerBasePath == basePath))
-            //    {
-            //        ServerCache._ServerList.Servers.Add(Server);
-            //        JSONHelper.SaveServerToFile(ServerCache._ServerList);
-            //    } 
-            //    else
-            //    {
-            //        throw new Exception("Server has already been added");
-            //    }
-            //    return Server;
-            //}
+                //    if (!ExistingServers.Exists(s => s.ServerBasePath == basePath))
+                //    {
+                //        ServerCache._ServerList.Servers.Add(Server);
+                //        JSONHelper.SaveServerToFile(ServerCache._ServerList);
+                //    } 
+                //    else
+                //    {
+                //        throw new Exception("Server has already been added");
+                //    }
+                //    return Server;
+                //}
 
-            return null;            
+            }
+
+            return false;            
         }
 
         public static bool AddGBServer(GameServer server)

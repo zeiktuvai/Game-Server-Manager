@@ -19,7 +19,7 @@ namespace GBServerManager2.Services.Helpers
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "",//AppSettingsHelper.ReadSettings().SteamCMDPath,
-                        Arguments = string.Format("+force_install_dir {0} +login anonymous +app_update 476400 +quit", server.ServerBasePath)
+                        Arguments = string.Format("+force_install_dir {0} +login anonymous +app_update + +quit", server.ServerBasePath)
                     }
                 };
                 proc.Start();

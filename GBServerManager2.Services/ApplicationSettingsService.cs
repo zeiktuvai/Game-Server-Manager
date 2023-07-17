@@ -1,4 +1,5 @@
 ﻿using GBServerManager2.Data;
+using GBServerManager2.Models;
 using GBServerManager2.Models.Enums;
 using GBServerManager2.Models.Options;
 using System;
@@ -42,5 +43,9 @@ namespace GBServerManager2.Services
             }
         }
 
+        public bool CheckServerPathSet()
+        {
+            return GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).Any();
+        }
     }
 }

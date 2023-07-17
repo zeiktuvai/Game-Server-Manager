@@ -2,7 +2,8 @@
 {
     public enum ServerTypeEnum
     {
-        GroundBranch = 0,
-        OperationHarshDoorstop = 1,
+        Ground_Branch = 0,
+        Operation_Harsh_Doorstop = 1,
+        SCP_5k = 2,
     }
 }

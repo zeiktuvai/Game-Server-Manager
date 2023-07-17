@@ -1,6 +1,8 @@
 ﻿@using GBServerManager2.Services.Helpers;
 @using GBServerManager2.Models.Options;
 
+@inject ApplicationSettingsService _asr;
+
 <div class="rz-p-4 rz-text-align-center">
     <RadzenSelectBar @bind-Value="isExistingServer" TValue="bool" class="mb-5">
         <Items>
@@ -10,28 +12,51 @@
     </RadzenSelectBar>
 </div>
 
+@if (isExistingServer == false)
+{
+    <div class="row">
+        <span>Server Type</span>
+        <RadzenDropDown @bind-Value=@selectedType Data=@games />
+    </div>
+    <div class="row">
+        <span>Name</span>
+        <input type="text" />
+    </div>
+}
 
+@if(addDisabled)
+{
+    <span class="badge bg-warning" style="color: black;">Default path not set, please go to <RadzenLink Path="settings" Text="settings"/> and set.</span>
+}
 
 <div class="mt-2 d-flex justify-content-end">
-    <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" @onclick="SaveBasePath">Save</button>
+    <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" disabled="@addDisabled" @onclick="AddServer">Save</button>
     <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
 </div>
 
 @code {
     [Inject] DialogService _ds { get; set; }
-    //[Inject] GameServerService _gss { get; set; }
-    private bool isExistingServer = false;
-
     //[Parameter] public ApplicationSettings appSetting { get; set; }
-
+    List<string> games;
+    private string selectedType = "";
+    private bool isExistingServer = false;
     private bool pathIsValid = true;
+    private bool addDisabled = false;
+
 
     protected override void OnInitialized()
     {
+        games = new List<string>();
+        foreach (var item in Enum.GetNames(typeof(ServerTypeEnum)).ToList())
+        {
+            games.Add(item.Replace('_', ' '));
+        }
+
+        addDisabled = !_asr.CheckServerPathSet();
 
     }
 
-    private void SaveBasePath()
+    private void AddServer()
     {
 
     }

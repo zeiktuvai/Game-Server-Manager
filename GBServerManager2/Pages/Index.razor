@@ -45,10 +45,13 @@
                                         </svg>
                                         <span>@srv.QueryPort</span>
                                     </Tooltip>
-                                    <Tooltip Text="Automatic restart timer">
-                                        <i class="bi bi-clock-history me-1" style="color: var(--color-offWhite);"></i>
-                                        <span>@srv.RestartTime hr</span>
-                                    </Tooltip>
+                                    @if (srv.ServerType == ServerTypeEnum.Ground_Branch)
+                                    {
+                                        <Tooltip Text="Automatic restart timer">
+                                            <i class="bi bi-clock-history me-1" style="color: var(--color-offWhite);"></i>
+                                            <span>@((srv as GBServer).RestartTime) hr</span>
+                                        </Tooltip>                                        
+                                    }
                                 </RadzenStack>
                             </div>
                         <div class="row">
@@ -87,10 +90,10 @@
 
     protected override void OnInitialized()
     {
-        servers.Servers = new List<GBServer>()
-        { new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.GroundBranch},
+        servers.Servers = new List<GameServer>()
+        { new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.Ground_Branch},
         new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
-        ServerType = ServerTypeEnum.GroundBranch}};
+        ServerType = ServerTypeEnum.Ground_Branch}};
 
     }
 

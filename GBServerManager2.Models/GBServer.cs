@@ -20,8 +20,8 @@ namespace GBServerManager2.Models
         public string GameRules { get; set; }
         [BsonIgnore]
         public string _Status { get; set; }
-        [BsonIgnore]
-        public string _PlayerStats { get; set; }
+
+        public const string SteamAppId = "476400";
       
 
         public string GetProcessStartArgs()
