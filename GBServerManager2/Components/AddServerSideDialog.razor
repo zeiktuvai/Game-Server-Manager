@@ -2,32 +2,53 @@
 @using GBServerManager2.Models.Options;
 
 @inject ApplicationSettingsService _asr;
+@inject GameServerService _gss;
 
 <div class="rz-p-4 rz-text-align-center">
-    <RadzenSelectBar @bind-Value="isExistingServer" TValue="bool" class="mb-5">
+    <RadzenSelectBar @bind-Value="isExistingServer" Change="ServerLocChanged" TValue="bool" class="mb-5">
         <Items>
             <RadzenSelectBarItem Text="New" Value="false" />
             <RadzenSelectBarItem Text="Existing" Value="true" />
         </Items>
     </RadzenSelectBar>
 </div>
+<div class="row">
+    <span>Server Type</span>
+    <RadzenDropDown @bind-Value=@selectedType Change="ServerTypeChanged" Data=@games>
+        <Template>
+            @((context as Tuple<string, int>).Item1)
+        </Template>
+        <ValueTemplate>
+            @((context as Tuple<string, int>).Item1)
+        </ValueTemplate>
+    </RadzenDropDown>
+</div>
 
 @if (isExistingServer == false)
 {
     <div class="row">
-        <span>Server Type</span>
-        <RadzenDropDown @bind-Value=@selectedType Data=@games />
-    </div>
-    <div class="row">
         <span>Name</span>
         <input type="text" />
     </div>
+
+    @if(addDisabled)
+    {
+        <span class="badge bg-warning" style="color: black;">Default path not set, please go to <RadzenLink Path="settings" Text="settings"/> and set.</span>
+    }
 }
 
-@if(addDisabled)
+@if (isExistingServer == true)
 {
-    <span class="badge bg-warning" style="color: black;">Default path not set, please go to <RadzenLink Path="settings" Text="settings"/> and set.</span>
+    <div class="row">
+        <span>Server path</span>
+        <input type="text" @bind-value="serverPath" />
+    </div>
+    @if (showExeBanner)
+    {
+        <span class="badge bg-info text-wrap mt-2" style="color: black">@exeBannerText</span>        
+    }
 }
+
 
 <div class="mt-2 d-flex justify-content-end">
     <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" disabled="@addDisabled" @onclick="AddServer">Save</button>
@@ -37,27 +58,52 @@
 @code {
     [Inject] DialogService _ds { get; set; }
     //[Parameter] public ApplicationSettings appSetting { get; set; }
-    List<string> games;
-    private string selectedType = "";
+    List<Tuple<string, int>> games;
+    private Tuple<string, int> selectedType;
+    private string serverPath = "";
     private bool isExistingServer = false;
     private bool pathIsValid = true;
     private bool addDisabled = false;
+    private bool rootPathSet = true;
+    private bool showExeBanner = false;
+    private string exeBannerText = "";
 
 
     protected override void OnInitialized()
     {
-        games = new List<string>();
-        foreach (var item in Enum.GetNames(typeof(ServerTypeEnum)).ToList())
+        games = new List<Tuple<string, int>>();
+        foreach (var item in Enum.GetValues(typeof(ServerTypeEnum)))
         {
-            games.Add(item.Replace('_', ' '));
+            games.Add(new Tuple<string, int>(Enum.GetName(typeof(ServerTypeEnum), item).Replace('_', ' '), (int)item));
         }
 
-        addDisabled = !_asr.CheckServerPathSet();
+        rootPathSet = _asr.CheckServerPathSet();
+        addDisabled = rootPathSet ? false : true;
 
+    }
+
+    private void ServerLocChanged()
+    {
+        addDisabled = rootPathSet == true ? false : isExistingServer == true && addDisabled == true ? false : true;
+
+        StateHasChanged();
+    }
+
+    private void ServerTypeChanged()
+    {
+        if (isExistingServer == true && selectedType.Item2 == 0)
+        {
+            showExeBanner = true;
+            exeBannerText = "Please enter the path to the GroundBranchServer.exe or GroundBranchServer-Win64-Shipping.exe";
+        }
     }
 
     private void AddServer()
     {
+        if (isExistingServer && !string.IsNullOrWhiteSpace(serverPath))
+        {
+            _gss.AddExistingGameServer(serverPath, (ServerTypeEnum)selectedType.Item2);
 
+        }
     }
 }

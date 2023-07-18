@@ -25,7 +25,7 @@ namespace GBServerManager2.Services
         {
             Servers.Servers = _gsr.GetAllGameServers().ToList();
         }
-
+        
         public bool AddNewGameServer(string basePath, string serverExePath, ServerTypeEnum serverType)
         {
             if (serverType == ServerTypeEnum.Ground_Branch)
@@ -50,6 +50,17 @@ namespace GBServerManager2.Services
             }
 
             return false;            
+        }
+
+        public bool AddExistingGameServer(string basePath, ServerTypeEnum serverType)
+        {
+            if (serverType == ServerTypeEnum.Ground_Branch)
+            {
+                var server = GBServerHelper.FindGBServerExecutable(basePath);
+            }
+
+
+            return false;
         }
 
         public static bool AddGBServer(GameServer server)

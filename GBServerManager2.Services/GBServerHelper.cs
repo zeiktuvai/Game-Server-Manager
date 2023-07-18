@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GBServerManager2.Services
 {
-    public static class GBServerService
+    public static class GBServerHelper
     {
         public static GBServer FindGBServerExecutable(string FileName)
         {
@@ -14,7 +14,7 @@ namespace GBServerManager2.Services
             try
             {
                 string DirPath = Path.GetDirectoryName(FileName);
-
+                //TODO: re-write to search for files instead of search the string.
                 if (FileName.Contains("GroundBranchServer-Win64-Shipping.exe"))
                 {
                     string path = Path.GetDirectoryName(FileName);
