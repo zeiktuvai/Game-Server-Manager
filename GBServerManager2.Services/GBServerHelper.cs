@@ -6,96 +6,73 @@ namespace GBServerManager2.Services
 {
     public static class GBServerHelper
     {
-        public static GBServer FindGBServerExecutable(string FileName)
+        public static GBServer FindGBServerExecutable(string path)
         {
-            GBServer paths = new GBServer();
-            string GBFolderName = "GroundBranch";
+            GBServer server = new GBServer();
 
             try
             {
-                string DirPath = Path.GetDirectoryName(FileName);
-                //TODO: re-write to search for files instead of search the string.
-                if (FileName.Contains("GroundBranchServer-Win64-Shipping.exe"))
+                var dir = Directory.GetFiles(path, "GroundBranchServer*.exe", SearchOption.AllDirectories).ToList();
+
+                if (dir != null && dir.Count > 0) 
                 {
-                    string path = Path.GetDirectoryName(FileName);
-                    paths.ServerBasePath = path.Substring(0, path.IndexOf(GBFolderName));
-                    paths.ServerPath = FileName;
+                    server.ServerPath = dir.Where(s => s.Contains("Win64")).First();
+                    server.ServerBasePath = Path.GetDirectoryName(dir.Where(s => !s.Contains("Binaries")).First());
+                    server.ServerWorkinDir = Path.GetDirectoryName(dir.Where(s => s.Contains("Win64")).First());
+                }
+                else
+                {
+                    throw new FileNotFoundException();
                 }
 
-                if (FileName.Contains("GroundBranchServer.exe"))
-                {
-                    paths.ServerBasePath = Path.GetDirectoryName(FileName);
-                    var exeFiles = Directory.GetFiles(paths.ServerBasePath, "*.exe", SearchOption.AllDirectories);
-                    foreach (var item in exeFiles)
-                    {
-                        if (item.Contains("GroundBranchServer-Win64-Shipping.exe"))
-                        {
-                            paths.ServerPath = item;
-                        }
-                    }
-                }
-
-                return paths;
+                return server;
             }
             catch (Exception)
             {
                 throw new FileNotFoundException();
             }
-        }
-
-        internal static GBServer RetrieveGBServerProperties(string BasePath, string ServerExePath)
-        {
-            string ServerIniPath = "";
-            GBServer NewServer = new GBServer();
-
-            NewServer.ServerId = Guid.NewGuid();
-            NewServer.ServerBasePath = BasePath;
-            NewServer.ServerPath = ServerExePath;
-            NewServer.RestartTime = 24;
-
-            try
-            {
-                var IniFiles = Directory.GetFiles(BasePath, "*.ini", SearchOption.AllDirectories);
-
-                foreach (var File in IniFiles)
-                {
-                    if (File.Contains("Server.ini"))
-                    {
-                        ServerIniPath = File;
-                        break;
-                    }
-                }
-
-                NewServer = GetServerINIFile(NewServer);
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            NewServer.Header = NewServer.ServerName.Substring(0, 15);
-            return NewServer;
         }
 
         internal static GBServer RetrieveGBServerProperties(GBServer server)
         {
-            var updateServer = server;
-            updateServer.Header = server.ServerName.Length < 15 ? server.ServerName.Substring(0, server.ServerName.Length) : server.ServerName.Substring(0, 15);
+            server.ServerId = Guid.NewGuid();
+            server.RestartTime = 12;
 
-            if (File.Exists(Path.Combine(server.ServerBasePath + "\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe")))
+            try
             {
-                updateServer.ServerPath = Path.Combine(server.ServerBasePath + "\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe");
+                var IniFiles = Directory.GetFiles(server.ServerBasePath, "Server.ini", SearchOption.AllDirectories);
+
+                if (IniFiles != null && IniFiles.Length > 0)
+                {
+                    server = GetServerINIFile(server, IniFiles[0]);
+                }
             }
-            else
+            catch (Exception)
             {
-                throw new FileNotFoundException();
+                throw;
             }
 
-            return updateServer;
-
+            server.Header = server.ServerName.Substring(0, 15);
+            return server;
         }
+
+        //internal static GBServer RetrieveGBServerProperties(GBServer server)
+        //{
+        //    var updateServer = server;
+        //    updateServer.Header = server.ServerName.Length < 15 ? server.ServerName.Substring(0, server.ServerName.Length) : server.ServerName.Substring(0, 15);
+
+        //    if (File.Exists(Path.Combine(server.ServerBasePath + "\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe")))
+        //    {
+        //        updateServer.ServerPath = Path.Combine(server.ServerBasePath + "\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe");
+        //    }
+        //    else
+        //    {
+        //        throw new FileNotFoundException();
+        //    }
+
+        //    return updateServer;
+
+        //}
 
         internal static string GetNewGBServerDirectory()
         {
@@ -166,14 +143,14 @@ namespace GBServerManager2.Services
             File.WriteAllText(INIPath + "\\Server.ini", file.ToString());
         }
 
-        internal static GBServer GetServerINIFile(GBServer server)
+        internal static GBServer GetServerINIFile(GBServer server, string IniPath)
         {
-            var ServerIniPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig\\Server.ini");
+           
             string ServerConfigFile = "";
 
-            if (File.Exists(ServerIniPath))
+            if (File.Exists(IniPath))
             {
-                string _ReadFile = File.ReadAllText(ServerIniPath);
+                string _ReadFile = File.ReadAllText(IniPath);
 
                 if (!string.IsNullOrEmpty(_ReadFile))
                 {

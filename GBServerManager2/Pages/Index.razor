@@ -1,6 +1,7 @@
 ﻿@page "/"
 
 @inject DialogService _ds
+@inject GameServerService _gss
 
 <h2>Installed Servers</h2>
 
@@ -90,10 +91,11 @@
 
     protected override void OnInitialized()
     {
-        servers.Servers = new List<GameServer>()
-        { new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.Ground_Branch},
-        new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
-        ServerType = ServerTypeEnum.Ground_Branch}};
+        servers.Servers = _gss.List.Servers;
+        //new List<GameServer>()
+        //{ new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.Ground_Branch},
+        //new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
+        //ServerType = ServerTypeEnum.Ground_Branch}};
 
     }
 
@@ -101,5 +103,6 @@
     {
         await _ds.OpenSideAsync<AddServerSideDialog>("Add Server",
             options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true });
+        StateHasChanged();
     }
 }

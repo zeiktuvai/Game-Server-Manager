@@ -55,6 +55,11 @@
     <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
 </div>
 
+@if (showError)
+{
+    <span class="badge bg-danger text-wrap">@errorText</span>    
+}
+
 @code {
     [Inject] DialogService _ds { get; set; }
     //[Parameter] public ApplicationSettings appSetting { get; set; }
@@ -66,7 +71,9 @@
     private bool addDisabled = false;
     private bool rootPathSet = true;
     private bool showExeBanner = false;
+    private bool showError = false;
     private string exeBannerText = "";
+    private string errorText = "";
 
 
     protected override void OnInitialized()
@@ -85,7 +92,7 @@
     private void ServerLocChanged()
     {
         addDisabled = rootPathSet == true ? false : isExistingServer == true && addDisabled == true ? false : true;
-
+        selectedType = null;
         StateHasChanged();
     }
 
@@ -102,8 +109,16 @@
     {
         if (isExistingServer && !string.IsNullOrWhiteSpace(serverPath))
         {
-            _gss.AddExistingGameServer(serverPath, (ServerTypeEnum)selectedType.Item2);
-
+            try
+            {
+                _gss.AddExistingGameServer(serverPath, (ServerTypeEnum)selectedType.Item2);
+                _ds.Close();
+            }
+            catch (Exception e)
+            {
+                showError = true;
+                errorText = e.Message;
+            }
         }
     }
 }

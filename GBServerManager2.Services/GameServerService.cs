@@ -12,7 +12,7 @@ namespace GBServerManager2.Services
 {
     public class GameServerService
     {
-        public ServerList Servers = new ServerList();
+        public ServerList List = new ServerList();
         private GameServerRepository _gsr { get; set; }
 
         public GameServerService(GameServerRepository gsr)
@@ -23,7 +23,7 @@ namespace GBServerManager2.Services
 
         private void UpdateGameServers()
         {
-            Servers.Servers = _gsr.GetAllGameServers().ToList();
+            List.Servers = _gsr.GetAllGameServers().ToList();
         }
         
         public bool AddNewGameServer(string basePath, string serverExePath, ServerTypeEnum serverType)
@@ -57,9 +57,15 @@ namespace GBServerManager2.Services
             if (serverType == ServerTypeEnum.Ground_Branch)
             {
                 var server = GBServerHelper.FindGBServerExecutable(basePath);
+                if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
+                {
+                    server = GBServerHelper.RetrieveGBServerProperties(server);
+                    _gsr.AddGameServer(server); //Why does this throw an error?
+                    return true;
+                }
+
+                throw new Exception("Server exists in collection.");
             }
-
-
             return false;
         }
 
