@@ -12,7 +12,8 @@ namespace GBServerManager2.Models
 {
     public class GameServer
     {
-        public Guid ServerId { get; set; }
+        [BsonId]
+        public int id { get; set; }
         public ServerTypeEnum ServerType { get; set; }
         public string ServerName { get; set; }
         public string ServerPath { get; set; }
@@ -25,8 +26,11 @@ namespace GBServerManager2.Models
         public int _ServerPID { get; set; }
         [BsonIgnore]
         public string _PlayerStats { get; set; }
+
+
         public GameServer()
         {
+            //id = ObjectId.NewObjectId();
             serverProc = new GameServerProcess();
         }
     }

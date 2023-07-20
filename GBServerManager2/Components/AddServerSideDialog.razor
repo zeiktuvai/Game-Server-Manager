@@ -112,7 +112,8 @@
             try
             {
                 _gss.AddExistingGameServer(serverPath, (ServerTypeEnum)selectedType.Item2);
-                _ds.Close();
+                StateHasChanged();
+                _ds.CloseSide();
             }
             catch (Exception e)
             {

@@ -34,8 +34,7 @@ namespace GBServerManager2.Services
         }
 
         internal static GBServer RetrieveGBServerProperties(GBServer server)
-        {
-            server.ServerId = Guid.NewGuid();
+        {            
             server.RestartTime = 12;
 
             try
@@ -46,13 +45,14 @@ namespace GBServerManager2.Services
                 {
                     server = GetServerINIFile(server, IniFiles[0]);
                 }
+                server = GetGBServerStartOptions(server);
             }
             catch (Exception)
             {
                 throw;
             }
 
-            server.Header = server.ServerName.Substring(0, 15);
+            server.Header = server.ServerName.Substring(0, 15);            
             return server;
         }
 
@@ -197,6 +197,53 @@ namespace GBServerManager2.Services
             {
                 throw new IOException("Failed to read Server.Ini file");
             }
+        }
+
+        internal static GBServer GetGBServerStartOptions(GBServer server)
+        {
+            string serverBatFile = "";
+            var batFile = Directory.GetFiles(server.ServerBasePath, "DedicatedServer.bat", SearchOption.TopDirectoryOnly);
+            int successfulCount = 0;
+
+            if (batFile.Length > 0 && File.Exists(batFile[0]))
+            {
+                string readfile = File.ReadAllText(batFile[0]);
+
+                if (!string.IsNullOrWhiteSpace(readfile))
+                {
+                    serverBatFile = readfile;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(serverBatFile))
+            {
+                var File = serverBatFile.Split(Environment.NewLine);
+                foreach (var item in File)
+                {
+                    if (successfulCount == 3)
+                    {
+                        break;
+                    }
+                    if (item.Contains("set MultiHome="))
+                    {
+                        server.MultiHome = item.Substring(item.IndexOf('=') + 1).Trim();
+                        successfulCount++;
+                    }
+                    if (item.Contains("set Port="))
+                    {
+                        server.Port = string.IsNullOrEmpty(item.Substring(item.IndexOf("=") + 1).Trim()) ? 0 : int.Parse(item.Substring(item.IndexOf("=") + 1).Trim());
+                        successfulCount++;
+                    }
+                    if (item.Contains("set QueryPort="))
+                    {
+                        server.QueryPort = string.IsNullOrEmpty(item.Substring(item.IndexOf("=") + 1).Trim()) ? 0 : int.Parse(item.Substring(item.IndexOf("=") + 1).Trim());
+                        successfulCount++;
+                    }
+
+                }
+            }
+
+            return server;
         }
     }
 }

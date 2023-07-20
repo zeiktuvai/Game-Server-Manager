@@ -60,7 +60,8 @@ namespace GBServerManager2.Services
                 if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
                 {
                     server = GBServerHelper.RetrieveGBServerProperties(server);
-                    _gsr.AddGameServer(server); //Why does this throw an error?
+                    _gsr.AddGameServer(server);
+                    UpdateGameServers();
                     return true;
                 }
 

@@ -6,7 +6,7 @@
 <h2>Installed Servers</h2>
 
 <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 g-3">
-    @foreach (var srv in servers.Servers)
+    @foreach (var srv in _gss.List.Servers)
     {
         <div class="col">
             <div class="card bg-list-item">
@@ -58,8 +58,8 @@
                         <div class="row">
                             <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" class="mt-3">
                                 <RadzenButton Icon="play_arrow" ButtonStyle="ButtonStyle.Success" />
-                                <RadzenButton Icon="stop" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="refresh" ButtonStyle="ButtonStyle.Info" />
+                                <RadzenButton Icon="stop" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" />
                             </RadzenStack>
@@ -71,14 +71,14 @@
         </div>
     }
     <div class="col">
-        <div class="card bg-list-item" >
-            <button class="btn" @onclick="OpenAddDialog">
-            <div class="card-body">
-                <div class="d-flex flex-column align-items-center">
-                    <span class="oi oi-plus mb-1 add-server-icon" aria-hidden="true"></span>
-                    <p class="card-text">Add Server</p>
+        <div class="card bg-list-item p-0" style="height: 145px">
+            <button class="btn stretched-link p-0" @onclick="OpenAddDialog">
+                <div class="card-body p-0" >
+                    <div class="d-flex flex-column align-items-center p-0 mt-5" >
+                        <span class="oi oi-plus mb-1 add-server-icon" aria-hidden="true"></span>
+                        <p class="card-text">Add Server</p>
+                    </div>
                 </div>
-            </div>
             </button>
         </div>
     </div>
@@ -87,11 +87,10 @@
 
 
 @code{
-    ServerList servers = new();
-
+    
     protected override void OnInitialized()
     {
-        servers.Servers = _gss.List.Servers;
+        //servers.Servers = _gss.List.Servers;
         //new List<GameServer>()
         //{ new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.Ground_Branch},
         //new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",

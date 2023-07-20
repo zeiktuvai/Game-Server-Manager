@@ -22,10 +22,10 @@ namespace GBServerManager2.Data
             return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).FindAll();
         }
 
-        public GameServer GetGameServer(Guid serverId) 
+        public GameServer GetGameServer(int serverId) 
         { 
             return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).FindOne(
-                s => s.ServerId == serverId);
+                s => s.id == serverId);
         }
 
         public int AddGameServer(GameServer server)
@@ -41,7 +41,7 @@ namespace GBServerManager2.Data
         public void DeleteGameServer(GameServer server)
         {
             //var srvr = GetGameServer(server.ServerId);
-            _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Delete(server.ServerId);
+            _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Delete(server.id);
         }
 
     }
