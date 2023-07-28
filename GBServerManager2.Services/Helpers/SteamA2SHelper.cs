@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GBServerManager2.Models;
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -75,12 +76,30 @@ namespace GBServerManager2.Services.Helpers
                 public short Port { get; set; }             //0x80
             }
             #endregion            
-            public static A2S_Information GetA2SInformation(IPEndPoint ep, bool initial)
+
+            public static string GetServerStatistics(GameServer server, bool ServerSetup = false)
             {
-                if (initial == true)
+                if (ServerSetup == true)
                 {
                     Thread.Sleep(60000);
                 }
+                
+                var ip = new IPEndPoint(IPAddress.Parse("127.0.0.1"), server.QueryPort);
+                var PlayerStats = SteamA2SHelper.A2S_INFO.GetA2SInformation(ip);
+
+                return $"{PlayerStats.Players}/{PlayerStats.MaxPlayers}";
+                
+                // Old code
+                //if (PlayerStats.MaxPlayers != 0)
+                //{
+
+                //    var updateServer = erCache._ServerList.Servers.Find(s => s.ServerId == item.ServerId);
+                //    updateServer._PlayerStats = string.Format("Players: {0}/{1}", PlayerStats.Players, PlayerStats.MaxPlayers);
+                //}
+            }
+
+            private static A2S_Information GetA2SInformation(IPEndPoint ep)
+            {                
                 try
                 {
                     A2S_Information info = new A2S_Information();
@@ -136,7 +155,7 @@ namespace GBServerManager2.Services.Helpers
             /// <summary>Reads a null-terminated string into a .NET Framework compatible string.</summary>
             /// <param name="input">Binary reader to pull the null-terminated string from.  Make sure it is correctly positioned in the stream before calling.</param>
             /// <returns>String of the same encoding as the input BinaryReader.</returns>
-            public static string ReadNullTerminatedString(ref BinaryReader input)
+            private static string ReadNullTerminatedString(ref BinaryReader input)
             {
                 StringBuilder sb = new StringBuilder();
                 char read = input.ReadChar();

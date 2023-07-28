@@ -24,6 +24,7 @@ namespace GBServerManager2.Services
         private void UpdateGameServers()
         {
             List.Servers = _gsr.GetAllGameServers().ToList();
+            List.Servers.ForEach(s => { s._PlayerStats = s._ServerPID != 0 ? SteamA2SHelper.A2S_INFO.GetServerStatistics(s) : "0/0"; });
         }
         
         public bool AddNewGameServer(string basePath, string serverExePath, ServerTypeEnum serverType)

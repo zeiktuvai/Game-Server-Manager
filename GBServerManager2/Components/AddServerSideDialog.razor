@@ -26,10 +26,55 @@
 
 @if (isExistingServer == false)
 {
-    <div class="row">
-        <span>Name</span>
-        <input type="text" />
-    </div>
+    <RadzenStack class="mt-2">
+        <RadzenStack Orientation="Orientation.Horizontal">
+            <RadzenLabel Text="Private Server"/>
+            <RadzenSwitch class="mt-1" @bind-Value="@isPrivateServer"/>
+        </RadzenStack>
+        
+        <EditForm Model="@addServer">
+
+            <div class="row">                
+                <span>Server Name</span>
+                <InputText @bind-Value="addServer.ServerName" />
+            </div>
+            <RadzenStack Orientation="Orientation.Horizontal">
+                <span>Max Players</span>
+                <input type="number" />
+            </RadzenStack>
+        
+            @*TODO: Find out what the common values between GB Server and the others*@
+            @*TODO: Create new pop up that shows cmd window output for server creation*@
+            <div class="row">
+                <span>Max Spectators</span>
+            </div>
+            <div class="row">
+                <span>Port</span>
+            </div>
+            <div class="row">
+                <span>Query Port</span>
+            </div>
+            <div class="row">
+                <InputNumber @bind-Value="(addServer as GBServer).RestartTime" />
+                <span>Restart Time</span>
+            </div>
+            <div class="row">
+                <span>Multi-Home</span>
+            </div>
+
+            @if (isPrivateServer)
+            {
+
+                <div class="row">
+                    <span>Server Password</span>
+                </div>
+                <div class="row">
+                    <span>Spectator Only Password</span>
+                </div>
+            }
+        </EditForm>
+    </RadzenStack>
+
 
     @if(addDisabled)
     {
@@ -62,11 +107,12 @@
 
 @code {
     [Inject] DialogService _ds { get; set; }
-    //[Parameter] public ApplicationSettings appSetting { get; set; }
+    GameServer addServer = new();
     List<Tuple<string, int>> games;
     private Tuple<string, int> selectedType;
     private string serverPath = "";
     private bool isExistingServer = false;
+    private bool isPrivateServer = false;
     private bool pathIsValid = true;
     private bool addDisabled = false;
     private bool rootPathSet = true;
@@ -98,10 +144,16 @@
 
     private void ServerTypeChanged()
     {
-        if (isExistingServer == true && selectedType.Item2 == 0)
+        switch (selectedType.Item2)
         {
-            showExeBanner = true;
-            exeBannerText = "Please enter the path to the GroundBranchServer.exe or GroundBranchServer-Win64-Shipping.exe";
+            case 0:
+                addServer = new GBServer();
+                if (isExistingServer == true)
+                {
+                    showExeBanner = true;
+                    exeBannerText = "Please enter the path to the GroundBranchServer.exe or GroundBranchServer-Win64-Shipping.exe";
+                }
+                break;
         }
     }
 

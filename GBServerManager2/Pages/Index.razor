@@ -21,7 +21,7 @@
                                     <h3>@(srv.ServerName.Length > 20 ? srv.ServerName.Substring(0, 20).Trim() + "..." : srv.ServerName)</h3>
                                 </div>
                                 <div class="col-md-1 col-1">
-                                    <Tooltip Text="@srv.ServerType.ToString()">
+                                    <Tooltip Text="@srv.ServerType.ToString().Replace("_", " ")">
                                         <img src="assets/groundBranch.png" style="width: 30px;"/>
                                     </Tooltip>
                                 </div>
