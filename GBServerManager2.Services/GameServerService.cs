@@ -29,26 +29,7 @@ namespace GBServerManager2.Services
         
         public bool AddNewGameServer(string basePath, string serverExePath, ServerTypeEnum serverType)
         {
-            if (serverType == ServerTypeEnum.Ground_Branch)
-            {
-                //if (!string.IsNullOrEmpty(basePath) && !string.IsNullOrEmpty(serverExePath))
-                //{
-                //    var Server = GBServerService.RetrieveGBServerProperties(basePath, serverExePath);
-                //    var ExistingServers = GetGBServers().Servers;
-
-                //    if (!ExistingServers.Exists(s => s.ServerBasePath == basePath))
-                //    {
-                //        ServerCache._ServerList.Servers.Add(Server);
-                //        JSONHelper.SaveServerToFile(ServerCache._ServerList);
-                //    } 
-                //    else
-                //    {
-                //        throw new Exception("Server has already been added");
-                //    }
-                //    return Server;
-                //}
-
-            }
+            
 
             return false;            
         }
@@ -96,6 +77,10 @@ namespace GBServerManager2.Services
             //}
         }
 
+        public Tuple<int, int> GetServerPorts()
+        {
+            return new Tuple<int, int>(List.Servers.Max(s => s.Port) + 1, List.Servers.Max(s => s.QueryPort) + 1);
+        }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GBServerManager2.Models;
+using GBServerManager2.Models.Enums;
 using System.Text;
 
 
@@ -56,68 +57,63 @@ namespace GBServerManager2.Services
             return server;
         }
 
-        //internal static GBServer RetrieveGBServerProperties(GBServer server)
-        //{
-        //    var updateServer = server;
-        //    updateServer.Header = server.ServerName.Length < 15 ? server.ServerName.Substring(0, server.ServerName.Length) : server.ServerName.Substring(0, 15);
-
-        //    if (File.Exists(Path.Combine(server.ServerBasePath + "\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe")))
-        //    {
-        //        updateServer.ServerPath = Path.Combine(server.ServerBasePath + "\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe");
-        //    }
-        //    else
-        //    {
-        //        throw new FileNotFoundException();
-        //    }
-
-        //    return updateServer;
-
-        //}
-
-        internal static string GetNewGBServerDirectory()
+        public static string GetNewGBServerDirectory(string ServerBasePath, ServerTypeEnum ServerType)
         {
-            //if (!string.IsNullOrWhiteSpace((AppSettingsHelper.ReadSettings()).ServerBasePath))
-            //{
-            //    var _basePath = AppSettingsHelper.ReadSettings().ServerBasePath;
-            //    var _serverFolderName = "Server_";
+            if (!string.IsNullOrWhiteSpace(ServerBasePath))
+            {
+                var _serverFolderName = "";
 
-            //    if (Directory.Exists(_basePath))
-            //    {
-            //        int dirNumber = 1;
-            //        bool emptyDirFound = false;
-            //        string? path = Path.Combine(_basePath, _serverFolderName + dirNumber);
+                switch (ServerType)
+                {
+                    case ServerTypeEnum.Ground_Branch:
+                        _serverFolderName = "GBServer_";
+                        break;
+                    case ServerTypeEnum.Operation_Harsh_Doorstop:
+                        _serverFolderName = "OHDServer_";
+                        break;
+                    case ServerTypeEnum.SCP_5k:
+                        _serverFolderName = "SCPServer_";
+                        break;
+                }
 
-            //        while (emptyDirFound == false)
-            //        {
-            //            var dirs = Directory.GetDirectories(_basePath);
 
-            //            if (dirs.Length > 0)
-            //            {
-            //                foreach (var item in dirs)
-            //                {
-            //                    path = Path.Combine(_basePath, _serverFolderName + dirNumber);
+                if (Directory.Exists(ServerBasePath))
+                {
+                    int dirNumber = 1;
+                    bool emptyDirFound = false;
+                    string? path = Path.Combine(ServerBasePath, _serverFolderName + dirNumber);
 
-            //                    if (item.Contains(path))
-            //                    {
-            //                        dirNumber++;
-            //                    }
-            //                }
+                    while (emptyDirFound == false)
+                    {
+                        var dirs = Directory.GetDirectories(ServerBasePath);
 
-            //                path = Path.Combine(_basePath, _serverFolderName + dirNumber);
-            //                if (!Directory.Exists(path))
-            //                {
-            //                    emptyDirFound = true;
-            //                }
-            //            }
-            //            else
-            //            {
-            //                emptyDirFound = true;
-            //            }
+                        if (dirs.Length > 0)
+                        {
+                            foreach (var item in dirs)
+                            {
+                                path = Path.Combine(ServerBasePath, _serverFolderName + dirNumber);
 
-            //        }
-            //        return path;
-            //    }
-            //}
+                                if (item.Contains(path))
+                                {
+                                    dirNumber++;
+                                }
+                            }
+
+                            path = Path.Combine(ServerBasePath, _serverFolderName + dirNumber);
+                            if (!Directory.Exists(path))
+                            {
+                                emptyDirFound = true;
+                            }
+                        }
+                        else
+                        {
+                            emptyDirFound = true;
+                        }
+
+                    }
+                    return path;
+                }
+            }
 
             return null;
         }
