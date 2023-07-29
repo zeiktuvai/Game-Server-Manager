@@ -1,8 +1,9 @@
-﻿@using GBServerManager2.Services.Helpers;
-@using GBServerManager2.Models.Options;
+﻿@using GBServerManager2.Services.Helpers
+@using GBServerManager2.Models.Options
+@using Blazored.FluentValidation
 
-@inject ApplicationSettingsService _asr;
-@inject GameServerService _gss;
+@inject ApplicationSettingsService _asr
+@inject GameServerService _gss
 
 <div class="rz-p-4 rz-text-align-center">
     <RadzenSelectBar @bind-Value="isExistingServer" Change="ServerLocChanged" TValue="bool" class="mb-5">
@@ -24,58 +25,76 @@
     </RadzenDropDown>
 </div>
 
-@if (isExistingServer == false)
+@if (selectedType != null && isExistingServer == false)
 {
     <RadzenStack class="mt-2">
         <RadzenStack Orientation="Orientation.Horizontal">
             <RadzenLabel Text="Private Server"/>
-            <RadzenSwitch class="mt-1" @bind-Value="@isPrivateServer"/>
+            <RadzenSwitch class="mt-1" @bind-Value="@addServer._IsPrivateServer"/>
         </RadzenStack>
         
-        <EditForm Model="@addServer">
+        <EditForm Model="@addServer" OnValidSubmit="OnHandleValidSubmit">
+            <FluentValidationValidator DisableAssemblyScanning="@true"/>
 
-            <div class="row">                
+            <div class="row mb-1">                
                 <span>Server Name</span>
-                <InputText @bind-Value="addServer.ServerName" />
-            </div>
-            <RadzenStack Orientation="Orientation.Horizontal">
-                <span>Max Players</span>
-                <input type="number" />
-            </RadzenStack>
-        
-            @*TODO: Find out what the common values between GB Server and the others*@
-            @*TODO: Create new pop up that shows cmd window output for server creation*@
-            <div class="row">
-                <span>Max Spectators</span>
-            </div>
-            <div class="row">
-                <span>Port</span>
-            </div>
-            <div class="row">
-                <span>Query Port</span>
-            </div>
-            <div class="row">
-                <InputNumber @bind-Value="(addServer as GBServer).RestartTime" />
-                <span>Restart Time</span>
-            </div>
-            <div class="row">
-                <span>Multi-Home</span>
+                <InputText class="ms-2 me-2" @bind-Value="addServer.ServerName" />
             </div>
 
-            @if (isPrivateServer)
-            {
-
-                <div class="row">
-                    <span>Server Password</span>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p class="mt-1 mb-2">Max Players</p>
+                    <p class="me-5 mt-1 mb-2">Port</p>
+                    <p class="mt-2 mb-2">Query Port</p>
                 </div>
+
+                <div class="col-sm-6">
+                    <InputNumber class="mb-1" style="width: 100px" @bind-Value="addServer.MaxPlayers" />
+                    <InputNumber class="mb-1" style="width: 100px" @bind-Value="addServer.Port" />
+                    <InputNumber class="mb-1" style="width: 100px" @bind-Value="addServer.QueryPort" />
+                </div>
+
+            </div>
+
+            @if (selectedType.Item2 == (int)ServerTypeEnum.Ground_Branch)
+            {
                 <div class="row">
-                    <span>Spectator Only Password</span>
+                    <div class="col-sm-6">
+                        <p class="mt-1 mb-2">Max Spectators</p>
+                        <p class="mt-1 mb-2">Restart Time</p>
+                        <p class="mt-1">Multi-Home</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <InputNumber class="mb-1" style="width: 100px" @bind-Value="(addServer as GBServer).MaxSpectators" />
+                        <InputNumber class="mb-1" style="width: 100px" @bind-Value="(addServer as GBServer).RestartTime" />
+                        <InputText class="mb-1" style="width: 150px" @bind-Value="(addServer as GBServer).MultiHome" />
+                    </div>
                 </div>
             }
+            @if (addServer._IsPrivateServer)
+            {
+                <div class="row">
+                <p class="mb-1">Server Password</p>
+                <InputText class="ms-2 me-2" @bind-Value="addServer.ServerPassword" />
+
+                @if (selectedType.Item2 == (int)ServerTypeEnum.Ground_Branch)
+                {
+                    <p class="mb-1">Spectator Only Password</p>
+                    <InputText class="ms-2 me-2" @bind-Value="(addServer as GBServer).SpectatorOnlyPassword" />
+                }
+
+                </div>
+            }
+
+            <div class="mt-2 d-flex justify-content-end">
+                <button type="submit" class="btn btn-sm btn-rounded btn-primary me-1">Add</button>
+                <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
+            </div>
+            <ValidationSummary /> 
         </EditForm>
     </RadzenStack>
 
-
+            <RadzenTextArea @bind-Value="SCH.output" />
     @if(addDisabled)
     {
         <span class="badge bg-warning" style="color: black;">Default path not set, please go to <RadzenLink Path="settings" Text="settings"/> and set.</span>
@@ -92,13 +111,14 @@
     {
         <span class="badge bg-info text-wrap mt-2" style="color: black">@exeBannerText</span>        
     }
+    
+    <div class="mt-2 d-flex justify-content-end">
+        <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" disabled="@addDisabled" @onclick="AddServer">Add</button>
+        <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
+    </div>
 }
 
 
-<div class="mt-2 d-flex justify-content-end">
-    <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" disabled="@addDisabled" @onclick="AddServer">Save</button>
-    <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
-</div>
 
 @if (showError)
 {
@@ -107,12 +127,12 @@
 
 @code {
     [Inject] DialogService _ds { get; set; }
-    GameServer addServer = new();
+    GameServer addServer = new GBServer();
     List<Tuple<string, int>> games;
     private Tuple<string, int> selectedType;
+    private SteamCMDHelper SCH;
     private string serverPath = "";
     private bool isExistingServer = false;
-    private bool isPrivateServer = false;
     private bool pathIsValid = true;
     private bool addDisabled = false;
     private bool rootPathSet = true;
@@ -132,7 +152,7 @@
 
         rootPathSet = _asr.CheckServerPathSet();
         addDisabled = rootPathSet ? false : true;
-
+        SCH = new();
     }
 
     private void ServerLocChanged()
@@ -148,11 +168,17 @@
         {
             case 0:
                 addServer = new GBServer();
+                var ports = _gss.GetServerPorts();
+                addServer.Port = ports.Item1;
+                addServer.QueryPort = ports.Item2;
                 if (isExistingServer == true)
                 {
                     showExeBanner = true;
                     exeBannerText = "Please enter the path to the GroundBranchServer.exe or GroundBranchServer-Win64-Shipping.exe";
                 }
+                break;
+            case 1:
+                addServer = new OHDServer();
                 break;
         }
     }
@@ -173,5 +199,25 @@
                 errorText = e.Message;
             }
         }
+    }
+
+
+    private async void OnHandleValidSubmit()
+    {
+        var serverBaseDir = _asr.GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).First().Value;
+        if (!SteamCMDHelper.CheckSteamClientExists())
+        {
+            await SteamCMDHelper.DownloadSteamClient();
+        }
+        else
+        {
+            var path = GBServerHelper.GetNewGBServerDirectory(serverBaseDir, addServer.ServerType);
+            addServer.ServerPath = path;
+            addServer.ServerWorkinDir = path;
+            SCH.DownloadUpdateNewServer(addServer);
+            SCH.outputUpdated += () => InvokeAsync(StateHasChanged);
+            //TODO: Pull this out into a new popup to display the output while it downloads.
+        }
+
     }
 }
