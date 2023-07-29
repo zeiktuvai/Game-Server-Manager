@@ -1,8 +1,6 @@
 ﻿using GBServerManager2.Models.Enums;
 using LiteDB;
 using System.Diagnostics;
-using System.Text;
-using System.Text.Json.Serialization;
 
 namespace GBServerManager2.Models
 {
@@ -11,18 +9,23 @@ namespace GBServerManager2.Models
         public string Header { get; set; }
         public string ServerBasePath { get; set; }
         public string ServerMOTD { get; set; }
-        public string ServerPassword { get; set; }
         public string SpectatorOnlyPassword { get; set; }
         public string MultiHome { get; set; }
         public int RestartTime { get; set; }
-        public int MaxPlayers { get; set; }
         public int MaxSpectators { get; set; }
         public string GameRules { get; set; }
         [BsonIgnore]
         public string _Status { get; set; }
-        [BsonIgnore]
-        public const string SteamAppId = "476400";
-      
+
+
+        public GBServer()
+        {
+            ServerType = ServerTypeEnum.Ground_Branch;
+            MultiHome = "0.0.0.0";
+            MaxPlayers = 16;
+            RestartTime = 12;
+            SteamAppId = "476400";
+        }
 
         public string GetProcessStartArgs()
         {

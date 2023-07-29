@@ -19,19 +19,24 @@ namespace GBServerManager2.Models
         public string ServerPath { get; set; }
         public string ServerWorkinDir { get; set; }
         public int Port { get; set; }
-        public int QueryPort { get; set; }                
+        public int QueryPort { get; set; }
+        public int MaxPlayers { get; set; }
+        public string ServerPassword { get; set; }
         [BsonIgnore]
         public GameServerProcess serverProc { get; set; }
         [BsonIgnore]
         public int _ServerPID { get; set; }
         [BsonIgnore]
         public string _PlayerStats { get; set; }
-
+        [BsonIgnore]
+        public bool _IsPrivateServer { get; set; }
+        [BsonIgnore]
+        public string SteamAppId { get; init; }
 
         public GameServer()
         {
-            //id = ObjectId.NewObjectId();
             serverProc = new GameServerProcess();
+            _IsPrivateServer = false;                        
         }
     }
 
@@ -180,7 +185,7 @@ namespace GBServerManager2.Models
             {
                 return false;
             }
-        }
+        }               
     }
 }
 
