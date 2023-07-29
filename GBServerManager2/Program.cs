@@ -4,6 +4,8 @@ using Microsoft.Extensions.Hosting.WindowsServices;
 using Radzen;
 using GBServerManager2.Models.Options;
 using GBServerManager2.Data;
+using FluentValidation;
+using GBServerManager2.Validator;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 {
@@ -21,6 +23,9 @@ builder.Services.AddScoped<ApplicationSettingsRepository>();
 builder.Services.AddScoped<ApplicationSettingsService>();
 builder.Services.AddSingleton<GameServerRepository>();
 builder.Services.AddSingleton<GameServerService>();
+
+builder.Services.AddScoped<IValidator<GBServer>, GBServerValidator>();
+
 builder.Host.UseWindowsService();
 
 var app = builder.Build();
