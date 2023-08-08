@@ -113,7 +113,7 @@
     }
     
     <div class="mt-2 d-flex justify-content-end">
-        <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" disabled="@addDisabled" @onclick="AddServer">Add</button>
+        <button type="button" class="btn btn-sm btn-rounded btn-primary me-1" disabled="@addDisabled" @onclick="AddExistingServer">Add</button>
         <button type="button" class="btn btn-sm btn-rounded btn-secondary" @onclick="(_ => _ds.CloseSide())">Cancel</button>
     </div>
 }
@@ -183,7 +183,7 @@
         }
     }
 
-    private void AddServer()
+    private void AddExistingServer()
     {
         if (isExistingServer && !string.IsNullOrWhiteSpace(serverPath))
         {
@@ -201,22 +201,34 @@
         }
     }
 
+    private void AddNewServer(string serverBaseDir)
+    {
+        var path = GBServerHelper.GetNewGBServerDirectory(serverBaseDir, addServer.ServerType);
+        addServer.ServerPath = path;
+        addServer.ServerWorkinDir = path;
+        SCH.DownloadUpdateNewServer(addServer);
+        SCH.outputUpdated += () => InvokeAsync(StateHasChanged);
+        //TODO: Pull this out into a new popup to display the output while it downloads.
+    }
+
 
     private async void OnHandleValidSubmit()
     {
         var serverBaseDir = _asr.GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).First().Value;
         if (!SteamCMDHelper.CheckSteamClientExists())
         {
+            //TODO: this might need to be it's own thing'
             await SteamCMDHelper.DownloadSteamClient();
+        }
+
+        if(SteamCMDHelper.CheckSteamClientExists())
+        {
+            AddNewServer(serverBaseDir);            
         }
         else
         {
-            var path = GBServerHelper.GetNewGBServerDirectory(serverBaseDir, addServer.ServerType);
-            addServer.ServerPath = path;
-            addServer.ServerWorkinDir = path;
-            SCH.DownloadUpdateNewServer(addServer);
-            SCH.outputUpdated += () => InvokeAsync(StateHasChanged);
-            //TODO: Pull this out into a new popup to display the output while it downloads.
+            errorText = "Failed to download server. (SteamCMD error)";
+            showError = true;
         }
 
     }

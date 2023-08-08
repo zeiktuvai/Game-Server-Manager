@@ -35,7 +35,7 @@ namespace GBServerManager2.Services.Helpers
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = GlobalConstants.SteamCommandPath + "\\steamcmd.exe",
-                        Arguments = $"+force_install_dir '{server.ServerPath}' +login anonymous +app_update {server.SteamAppId} +quit",
+                        Arguments = $"+force_install_dir \"{server.ServerPath}\" +login anonymous +app_update {server.SteamAppId} +quit",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         WindowStyle = ProcessWindowStyle.Hidden
