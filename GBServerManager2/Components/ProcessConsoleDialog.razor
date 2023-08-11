@@ -1,0 +1,56 @@
+﻿@using System.Diagnostics
+@using System.Text;
+
+<h3>@ProcessActionName</h3>
+<div class="overflow-auto" style="width: 550px; height: 300px; background: black; color: white; border-radius: 3px">
+    @((MarkupString)output)
+</div>
+
+@if (isCloseShown)
+{
+    <button type="button" class="btn btn-sm btn-primary">Close</button>
+}
+
+@code {
+    [Inject] DialogService _ds { get; set; }
+    [Parameter] public string ProcessActionName { get; set; }
+    [Parameter] public Process Proc { get; set; }
+    private StringBuilder ProcOut = new();
+    private string output = "";
+    private bool isCloseShown = false;
+
+    protected override void OnInitialized()
+    {
+        if (Proc != null && Proc.StartInfo != null)
+        {
+            var status = Proc.Start();
+
+            if (status)
+            {
+                output = "";
+                Proc.OutputDataReceived += OutputRecieved;
+                Proc.Exited += ShowClose;
+                Proc.BeginOutputReadLine();
+            }            
+        }
+    }
+
+    private void OutputRecieved(object sendingProc, DataReceivedEventArgs e)
+    {
+        ProcOut.Append(FormatLine(e.Data));
+        output = ProcOut.ToString();
+        InvokeAsync(StateHasChanged);
+        //outputUpdated?.Invoke();
+    }
+
+    private string FormatLine(string inputText)
+    {
+        return "<span>" + inputText + "</span></br>";
+    }
+
+    private void ShowClose(object? o, EventArgs e)
+    {
+        isCloseShown = true;
+    }
+}
+

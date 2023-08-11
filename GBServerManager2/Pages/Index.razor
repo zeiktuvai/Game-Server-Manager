@@ -101,7 +101,8 @@
     async Task OpenAddDialog()
     {
         await _ds.OpenSideAsync<AddServerSideDialog>("Add Server",
-            options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true });
+            options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true});
+
         StateHasChanged();
     }
 }

@@ -201,13 +201,24 @@
         }
     }
 
-    private void AddNewServer(string serverBaseDir)
+    private async void AddNewServer(string serverBaseDir)
     {
         var path = GBServerHelper.GetNewGBServerDirectory(serverBaseDir, addServer.ServerType);
         addServer.ServerPath = path;
         addServer.ServerWorkinDir = path;
-        SCH.DownloadUpdateNewServer(addServer);
-        SCH.outputUpdated += () => InvokeAsync(StateHasChanged);
+        var serverProc = SteamCMDHelper.DownloadUpdateNewServer(addServer);
+
+        _ds.CloseSide();
+
+        await _ds.OpenAsync<ProcessConsoleDialog>("Download Game Server",
+            new Dictionary<string, object>()
+                {
+                { "ProcessActionName", "" },
+                { "Proc", serverProc }
+                },
+            new DialogOptions() { Height = "600px", Width = "700px", Resizable = false, Draggable = false, ShowClose = false });
+
+        //SCH.outputUpdated += () => InvokeAsync(StateHasChanged);
         //TODO: Pull this out into a new popup to display the output while it downloads.
     }
 
@@ -221,15 +232,14 @@
             await SteamCMDHelper.DownloadSteamClient();
         }
 
-        if(SteamCMDHelper.CheckSteamClientExists())
+        try
         {
             AddNewServer(serverBaseDir);            
         }
-        else
+        catch (Exception)
         {
             errorText = "Failed to download server. (SteamCMD error)";
-            showError = true;
+            showError = true;            
         }
-
     }
 }

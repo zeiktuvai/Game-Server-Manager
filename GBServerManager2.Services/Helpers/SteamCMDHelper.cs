@@ -21,7 +21,7 @@ namespace GBServerManager2.Services.Helpers
             ProcOut = new StringBuilder();            
         }
 
-        public int DownloadUpdateNewServer(GameServer server)
+        public static Process DownloadUpdateNewServer(GameServer server)
         {
             if (!string.IsNullOrWhiteSpace(server.ServerPath))
             {
@@ -41,19 +41,19 @@ namespace GBServerManager2.Services.Helpers
                         WindowStyle = ProcessWindowStyle.Hidden
                     }
                 };
-                var status = proc.Start();
-                //TODO: Why is this not working to the right folder?
-                if (status)
-                {
-                    this.output = "";
-                    proc.OutputDataReceived += OutputRecieved;
-                    proc.BeginOutputReadLine();                                        
-                }
+                //var status = proc.Start();
 
-                return proc.Id;
+                //if (status)
+                //{
+                //    this.output = "";
+                //    proc.OutputDataReceived += OutputRecieved;
+                //    proc.BeginOutputReadLine();                                        
+                //}
+
+                return proc;
             }
 
-            return 0;
+            return new Process();
         }
 
         public static bool CheckSteamClientExists()
@@ -89,11 +89,11 @@ namespace GBServerManager2.Services.Helpers
             return true;
         }
 
-        private void OutputRecieved(object sendingProc, DataReceivedEventArgs e)
-        {
-            this.ProcOut.Append(e.Data);
-            this.output = ProcOut.ToString();
-            outputUpdated?.Invoke();
-        }
+        //private void OutputRecieved(object sendingProc, DataReceivedEventArgs e)
+        //{
+        //    this.ProcOut.Append(e.Data);
+        //    this.output = ProcOut.ToString();
+        //    outputUpdated?.Invoke();
+        //}
     }
 }
