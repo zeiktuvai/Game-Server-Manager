@@ -1,14 +1,18 @@
 ﻿@using System.Diagnostics
-@using System.Text;
+@using System.Text
+
+@inject IJSRuntime _js
 
 <h3>@ProcessActionName</h3>
-<div class="overflow-auto" style="width: 550px; height: 300px; background: black; color: white; border-radius: 3px">
+<div id="console" class="overflow-auto p-1" style="width: 650px; height: 455px; background: black; color: white; border-radius: 3px">
     @((MarkupString)output)
 </div>
 
 @if (isCloseShown)
 {
-    <button type="button" class="btn btn-sm btn-primary">Close</button>
+    <div class="d-flex justify-content-end mt-2">
+        <button type="button" class="btn btn-sm btn-primary" @onclick="CloseDialog">Close</button>
+    </div>
 }
 
 @code {
@@ -16,7 +20,15 @@
     [Parameter] public string ProcessActionName { get; set; }
     [Parameter] public Process Proc { get; set; }
     private StringBuilder ProcOut = new();
-    private string output = "";
+    private string _output;
+    private string output {
+        get { return _output; } 
+        set { 
+            _output = value; 
+            //TODO: why doesnt this work?
+            _js.InvokeVoidAsync("scrollEnd", "console");
+        } 
+    }
     private bool isCloseShown = false;
 
     protected override void OnInitialized()
@@ -27,8 +39,9 @@
 
             if (status)
             {
-                output = "";
-                Proc.OutputDataReceived += OutputRecieved;
+                output = "Starting....";
+                Proc.EnableRaisingEvents = true;
+                Proc.OutputDataReceived += OutputRecieved;                
                 Proc.Exited += ShowClose;
                 Proc.BeginOutputReadLine();
             }            
@@ -40,7 +53,6 @@
         ProcOut.Append(FormatLine(e.Data));
         output = ProcOut.ToString();
         InvokeAsync(StateHasChanged);
-        //outputUpdated?.Invoke();
     }
 
     private string FormatLine(string inputText)
@@ -51,6 +63,12 @@
     private void ShowClose(object? o, EventArgs e)
     {
         isCloseShown = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void CloseDialog()
+    {
+        _ds.Close();
     }
 }
 
