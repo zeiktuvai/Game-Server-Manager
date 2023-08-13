@@ -23,11 +23,11 @@ namespace GBServerManager2.Services.Helpers
 
         public static Process DownloadUpdateNewServer(GameServer server)
         {
-            if (!string.IsNullOrWhiteSpace(server.ServerPath))
+            if (!string.IsNullOrWhiteSpace((server as GBServer).ServerBasePath))
             {
-                if (!Directory.Exists(server.ServerPath))
+                if (!Directory.Exists((server as GBServer).ServerBasePath))
                 {
-                    Directory.CreateDirectory(server.ServerPath);
+                    Directory.CreateDirectory((server as GBServer).ServerBasePath);
                 }
 
                 var proc = new Process
@@ -35,20 +35,12 @@ namespace GBServerManager2.Services.Helpers
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = GlobalConstants.SteamCommandPath + "\\steamcmd.exe",
-                        Arguments = $"+force_install_dir \"{server.ServerPath}\" +login anonymous +app_update {server.SteamAppId} +quit",
+                        Arguments = $"+force_install_dir \"{(server as GBServer).ServerBasePath}\" +login anonymous +app_update {server.SteamAppId} +quit",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         WindowStyle = ProcessWindowStyle.Hidden
                     }
                 };
-                //var status = proc.Start();
-
-                //if (status)
-                //{
-                //    this.output = "";
-                //    proc.OutputDataReceived += OutputRecieved;
-                //    proc.BeginOutputReadLine();                                        
-                //}
 
                 return proc;
             }

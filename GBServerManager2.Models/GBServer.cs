@@ -5,8 +5,7 @@ using System.Diagnostics;
 namespace GBServerManager2.Models
 {
     public class GBServer : GameServer
-    {
-        public string Header { get; set; }
+    {        
         public string ServerBasePath { get; set; }
         public string ServerMOTD { get; set; }
         public string SpectatorOnlyPassword { get; set; }

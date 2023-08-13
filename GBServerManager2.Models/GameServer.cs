@@ -44,7 +44,7 @@ namespace GBServerManager2.Models
     {
         public StringBuilder processOutput { get; set; } = new StringBuilder();
         public string processOutputString { get; set; } = "";
-        private Process _proc { get; set; }
+        public Process proc { get; set; }
         public delegate void procOutputUpdateHandler();
         public event procOutputUpdateHandler outputUpdated;
 
@@ -78,15 +78,15 @@ namespace GBServerManager2.Models
 
             if (process)
             {
-                _proc = proc;
-                _proc.OutputDataReceived += OutputRecieved;
+                this.proc = proc;
+                this.proc.OutputDataReceived += OutputRecieved;
                 proc.BeginOutputReadLine();
 
-                return _proc.Id;
+                return this.proc.Id;
             }
             else
             {
-                _proc = null;
+                this.proc = null;
                 return 0;
             }
 
@@ -94,16 +94,16 @@ namespace GBServerManager2.Models
 
         public void StopProcess()
         {
-            this._proc.Kill();
+            this.proc.Kill();
             this.processOutput.Clear();
             this.processOutputString = "";
         }
 
         public int GetProcID()
         {
-            if (this._proc.HasExited)
+            if (this.proc.HasExited)
             {
-                return this._proc.Id;
+                return this.proc.Id;
             }
             return 0;
         }

@@ -1,4 +1,5 @@
 ﻿using GBServerManager2.Models;
+using GBServerManager2.Models.Enums;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -28,9 +29,20 @@ namespace GBServerManager2.Data
                 s => s.id == serverId);
         }
 
-        public int AddGameServer(GameServer server)
+        public int AddGameServer(GameServer server, ServerTypeEnum type)
         {
-            return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Insert(server);
+            switch (type)
+            {
+                case (ServerTypeEnum)0:
+                    return _db.GetCollection<GBServer>(GlobalConstants.GameServerCollectionName).Insert(server as GBServer);
+                case (ServerTypeEnum)1:
+                    return 0;
+                case (ServerTypeEnum)2:
+                    return 0;
+                default:
+                    return 0;                    
+            }
+
         }
 
         public bool UpdatedGameServer(GameServer server)

@@ -2,11 +2,6 @@
 using GBServerManager2.Models;
 using GBServerManager2.Models.Enums;
 using GBServerManager2.Services.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GBServerManager2.Services
 {
@@ -21,17 +16,42 @@ namespace GBServerManager2.Services
             UpdateGameServers();
         }
 
-        private void UpdateGameServers()
+        public void UpdateGameServers()
         {
             List.Servers = _gsr.GetAllGameServers().ToList();
             List.Servers.ForEach(s => { s._PlayerStats = s._ServerPID != 0 ? SteamA2SHelper.A2S_INFO.GetServerStatistics(s) : "0/0"; });
         }
         
-        public bool AddNewGameServer(string basePath, string serverExePath, ServerTypeEnum serverType)
-        {
-            
+        public GameServer GenerateServerProcess(GameServer server, string serverBaseDir, ServerTypeEnum serverType)
+        {            
+            switch (serverType)
+            {
+                case 0:
+                    var path = GBServerHelper.GetNewGBServerDirectory(serverBaseDir, server.ServerType);
+                    (server as GBServer).ServerBasePath = path;
+                    server.ServerWorkinDir = path;
+                    server.serverProc = new GameServerProcess { proc = SteamCMDHelper.DownloadUpdateNewServer(server) };             
+                    break;
+            }
 
-            return false;            
+            return server;
+        }
+
+        public void AddNewGameServer(GameServer server, ServerTypeEnum serverType)
+        {
+            switch (serverType)
+            {
+                case 0:
+                    GBServer srv = server as GBServer;
+                    srv.ServerType = serverType;
+                    srv.ServerPath = GBServerHelper.FindGBServerExecutable(srv);
+                    srv.InitialServerStart();
+                    GBServerHelper.CreateServerINIFile(srv);
+                    _gsr.AddGameServer(srv, serverType);
+
+                    break;
+            }
+                        
         }
 
         public bool AddExistingGameServer(string basePath, ServerTypeEnum serverType)
@@ -42,7 +62,8 @@ namespace GBServerManager2.Services
                 if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
                 {
                     server = GBServerHelper.RetrieveGBServerProperties(server);
-                    _gsr.AddGameServer(server);
+                    server.ServerType = serverType;
+                    _gsr.AddGameServer(server, serverType);
                     UpdateGameServers();
                     return true;
                 }

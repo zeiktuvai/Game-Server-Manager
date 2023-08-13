@@ -1,5 +1,6 @@
 ﻿using GBServerManager2.Models;
 using GBServerManager2.Models.Enums;
+using System.IO;
 using System.Text;
 
 
@@ -34,6 +35,27 @@ namespace GBServerManager2.Services
             }
         }
 
+        public static string FindGBServerExecutable(GBServer server)
+        {
+            try
+            {
+                var dir = Directory.GetFiles(server.ServerBasePath, "GroundBranchServer*.exe", SearchOption.AllDirectories).ToList();
+
+                if (dir != null && dir.Count > 0)
+                {
+                    return dir.Where(s => s.Contains("Win64")).First();
+                }
+                else
+                {
+                    throw new FileNotFoundException();
+                }                
+            }
+            catch (Exception)
+            {
+                return "";                
+            }
+        }
+
         internal static GBServer RetrieveGBServerProperties(GBServer server)
         {            
             server.RestartTime = 12;
@@ -52,8 +74,7 @@ namespace GBServerManager2.Services
             {
                 throw;
             }
-
-            server.Header = server.ServerName.Substring(0, 15);            
+                        
             return server;
         }
 
@@ -118,7 +139,7 @@ namespace GBServerManager2.Services
             return null;
         }
 
-        internal static void CreateServerINIFile(GBServer server)
+        public static void CreateServerINIFile(GBServer server)
         {
             StringBuilder file = new StringBuilder();
             var INIPath = Path.Combine(server.ServerBasePath, "GroundBranch\\ServerConfig");

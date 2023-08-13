@@ -94,7 +94,6 @@
         </EditForm>
     </RadzenStack>
 
-            <RadzenTextArea @bind-Value="SCH.output" />
     @if(addDisabled)
     {
         <span class="badge bg-warning" style="color: black;">Default path not set, please go to <RadzenLink Path="settings" Text="settings"/> and set.</span>
@@ -130,7 +129,6 @@
     GameServer addServer = new GBServer();
     List<Tuple<string, int>> games;
     private Tuple<string, int> selectedType;
-    private SteamCMDHelper SCH;
     private string serverPath = "";
     private bool isExistingServer = false;
     private bool pathIsValid = true;
@@ -152,7 +150,6 @@
 
         rootPathSet = _asr.CheckServerPathSet();
         addDisabled = rootPathSet ? false : true;
-        SCH = new();
     }
 
     private void ServerLocChanged()
@@ -201,40 +198,43 @@
         }
     }
 
-    private async void AddNewServer(string serverBaseDir)
-    {
-        var path = GBServerHelper.GetNewGBServerDirectory(serverBaseDir, addServer.ServerType);
-        addServer.ServerPath = path;
-        addServer.ServerWorkinDir = path;
-        var serverProc = SteamCMDHelper.DownloadUpdateNewServer(addServer);
+    private async void AddNewServer()
+    {        
+        var serverBaseDir = _asr.GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).First().Value;
 
         _ds.CloseSide();
+        addServer = _gss.GenerateServerProcess(addServer, serverBaseDir, (ServerTypeEnum)selectedType.Item2);
 
         await _ds.OpenAsync<ProcessConsoleDialog>("Download Game Server",
             new Dictionary<string, object>()
                 {
                 { "ProcessActionName", "" },
-                { "Proc", serverProc }
+                { "Proc", addServer.serverProc.proc }
                 },
             new DialogOptions() { Height = "600px", Width = "700px", Resizable = false, Draggable = false, ShowClose = false });
 
-        //SCH.outputUpdated += () => InvokeAsync(StateHasChanged);
-        //TODO: Pull this out into a new popup to display the output while it downloads.
+        _ds.Open("", ds => @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" Class="rz-p-12"> <RadzenText TextStyle="TextStyle.H6">Setting up Server, please wait...</RadzenText></RadzenStack>
+            , new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false }
+        );        
+    
+        await Task.Delay(1000);
+
+        _gss.AddNewGameServer(addServer, (ServerTypeEnum)selectedType.Item2);        
+        _ds.Close();
+        _gss.UpdateGameServers();
     }
 
 
     private async void OnHandleValidSubmit()
     {
-        var serverBaseDir = _asr.GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).First().Value;
         if (!SteamCMDHelper.CheckSteamClientExists())
         {
-            //TODO: this might need to be it's own thing'
             await SteamCMDHelper.DownloadSteamClient();
         }
 
         try
         {
-            AddNewServer(serverBaseDir);            
+            AddNewServer();            
         }
         catch (Exception)
         {
