@@ -41,12 +41,12 @@ namespace GBServerManager2.Services
         {
             switch (serverType)
             {
+                //TODO: Disabled initialize server stuff for speedy testing.
                 case 0:
                     GBServer srv = server as GBServer;
-                    srv.ServerType = serverType;
                     srv.ServerPath = GBServerHelper.FindGBServerExecutable(srv);
-                    srv.InitialServerStart();
-                    GBServerHelper.CreateServerINIFile(srv);
+                    //srv.InitialServerStart();
+                    //GBServerHelper.CreateServerINIFile(srv);
                     _gsr.AddGameServer(srv, serverType);
 
                     break;

@@ -168,6 +168,7 @@
                 var ports = _gss.GetServerPorts();
                 addServer.Port = ports.Item1;
                 addServer.QueryPort = ports.Item2;
+                addServer.ServerType = ServerTypeEnum.Ground_Branch;
                 if (isExistingServer == true)
                 {
                     showExeBanner = true;
@@ -205,17 +206,18 @@
         _ds.CloseSide();
         addServer = _gss.GenerateServerProcess(addServer, serverBaseDir, (ServerTypeEnum)selectedType.Item2);
 
-        await _ds.OpenAsync<ProcessConsoleDialog>("Download Game Server",
-            new Dictionary<string, object>()
-                {
-                { "ProcessActionName", "" },
-                { "Proc", addServer.serverProc.proc }
-                },
-            new DialogOptions() { Height = "600px", Width = "700px", Resizable = false, Draggable = false, ShowClose = false });
+        //TODO: Disabled downloading for speedy testing
+        // await _ds.OpenAsync<ProcessConsoleDialog>("Download Game Server",
+        //     new Dictionary<string, object>()
+        //         {
+        //         { "ProcessActionName", "" },
+        //         { "Proc", addServer.serverProc.proc }
+        //         },
+        //     new DialogOptions() { Height = "600px", Width = "700px", Resizable = false, Draggable = false, ShowClose = false });
 
-        _ds.Open("", ds => @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" Class="rz-p-12"> <RadzenText TextStyle="TextStyle.H6">Setting up Server, please wait...</RadzenText></RadzenStack>
-            , new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false }
-        );        
+        // _ds.Open("", ds => @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" Class="rz-p-12"> <RadzenText TextStyle="TextStyle.H6">Setting up Server, please wait...</RadzenText></RadzenStack>
+        //     , new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false }
+        // );        
     
         await Task.Delay(1000);
 

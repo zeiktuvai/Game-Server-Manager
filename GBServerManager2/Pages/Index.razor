@@ -87,9 +87,9 @@
 
 
 @code{
-    
+
     protected override void OnInitialized()
-    {
+    {        
         //servers.Servers = _gss.List.Servers;
         //new List<GameServer>()
         //{ new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.Ground_Branch},
@@ -103,6 +103,7 @@
         await _ds.OpenSideAsync<AddServerSideDialog>("Add Server",
             options: new SideDialogOptions {  CloseDialogOnOverlayClick = false, Position = DialogPosition.Right, ShowMask = true});
 
+        //TODO: this still isn't triggering an update.
         StateHasChanged();
     }
 }

@@ -34,7 +34,7 @@ namespace GBServerManager2.Data
             switch (type)
             {
                 case (ServerTypeEnum)0:
-                    return _db.GetCollection<GBServer>(GlobalConstants.GameServerCollectionName).Insert(server as GBServer);
+                    return _db.GetCollection<GameServer>(GlobalConstants.GameServerCollectionName).Insert((GBServer)server);
                 case (ServerTypeEnum)1:
                     return 0;
                 case (ServerTypeEnum)2:
