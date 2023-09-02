@@ -61,7 +61,7 @@
                                 <RadzenButton Icon="refresh" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="stop" ButtonStyle="ButtonStyle.Info" />
                                 <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Info" />
-                                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" />
+                                <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Click=@(() => DeleteServer(srv)) />
                             </RadzenStack>
                         </div>
                         </div>
@@ -90,11 +90,6 @@
 
     protected override void OnInitialized()
     {        
-        //servers.Servers = _gss.List.Servers;
-        //new List<GameServer>()
-        //{ new GBServer {ServerName = "Test Server 1", Port = 7776, QueryPort = 27014, RestartTime = 12, _PlayerStats = "0/8", ServerType = ServerTypeEnum.Ground_Branch},
-        //new GBServer {ServerName = "Discord Member Test Server with extra text just to be sure", Port = 7773, QueryPort = 27018, RestartTime = 12, _PlayerStats = "0/16",
-        //ServerType = ServerTypeEnum.Ground_Branch}};
 
     }
 
@@ -105,5 +100,17 @@
 
         //TODO: this still isn't triggering an update.
         StateHasChanged();
+    }
+
+    private async void DeleteServer(GameServer Server)
+    {
+        var result = await _ds.Confirm($"Are you sure you wish to delete {Server.ServerName}?", "Delete Server", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
+
+        if (result == true)
+        {
+            _gss.DeleteServer(Server);
+            _gss.UpdateGameServers();
+            StateHasChanged();
+        }            
     }
 }

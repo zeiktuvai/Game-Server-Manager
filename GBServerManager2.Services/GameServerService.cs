@@ -72,15 +72,8 @@ namespace GBServerManager2.Services
             }
             return false;
         }
-
-        public static bool AddGBServer(GameServer server)
-        {
-            //ServerCache._ServerList.Servers.Add(server);
-            //JSONHelper.SaveServerToFile(ServerCache._ServerList);
-            return true;
-        }
-        
-        public static void UpdateServer(GameServer server)
+      
+        public void UpdateServer(GameServer server)
         {
             //if (server != null)
             //{
@@ -96,6 +89,11 @@ namespace GBServerManager2.Services
             //        throw new KeyNotFoundException("Server not found in collection.");
             //    }
             //}
+        }
+
+        public void DeleteServer(GameServer server)
+        {
+            _gsr.DeleteGameServer(server);
         }
 
         public Tuple<int, int> GetServerPorts()
