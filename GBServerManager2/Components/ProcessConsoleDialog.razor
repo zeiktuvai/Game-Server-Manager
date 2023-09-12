@@ -12,6 +12,7 @@
     [Inject] DialogService _ds { get; set; }
     [Parameter] public string ProcessActionName { get; set; }
     [Parameter] public Process Proc { get; set; }
+    [Parameter] public bool IsServerDownload { get; set; } = false;
     private StringBuilder ProcOut = new();
     private string _output;
     private string output {
@@ -24,8 +25,8 @@
     }
 
     protected override void OnInitialized()
-    {
-        if (Proc != null && Proc.StartInfo != null)
+    {        
+        if (IsServerDownload == true && Proc != null && Proc.StartInfo != null)
         {           
             var status = Proc.Start();
 
@@ -33,17 +34,30 @@
             {
                 output = "Starting....";
                 Proc.EnableRaisingEvents = true;
-                Proc.OutputDataReceived += OutputRecieved;                
+                Proc.OutputDataReceived += DownloadOutputRecieved;                
                 Proc.Exited += Close;
                 Proc.BeginOutputReadLine();
             }            
         }
+        else
+        {
+            if (!Proc.HasExited)
+            {
+                Proc.OutputDataReceived += ServerOutputReceived;
+            }
+        }
     }
 
-    private void OutputRecieved(object sendingProc, DataReceivedEventArgs e)
+    private void DownloadOutputRecieved(object sendingProc, DataReceivedEventArgs e)
     {
         ProcOut.Append(FormatLine(e.Data));
         output = ProcOut.ToString();
+        InvokeAsync(StateHasChanged);
+        _js.InvokeVoidAsync("scrollEnd", "console");
+    }
+
+    private void ServerOutputReceived(object sendingProc, DataReceivedEventArgs e)
+    {
         InvokeAsync(StateHasChanged);
         _js.InvokeVoidAsync("scrollEnd", "console");
     }

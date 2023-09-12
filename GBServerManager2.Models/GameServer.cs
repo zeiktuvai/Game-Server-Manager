@@ -44,9 +44,15 @@ namespace GBServerManager2.Models
     {
         public StringBuilder processOutput { get; set; } = new StringBuilder();
         public string processOutputString { get; set; } = "";
-        public Process proc { get; set; }
+        public Process? proc { get; set; }
         public delegate void procOutputUpdateHandler();
         public event procOutputUpdateHandler outputUpdated;
+        private GameServer _server;
+
+        public GameServerProcess(GameServer server)
+        {
+            this._server = server;
+        }
 
         /// <summary>
         /// Tries to start a game server.  Returns PID if successful, 0 if failed.
@@ -54,42 +60,55 @@ namespace GBServerManager2.Models
         /// <param name="server"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public int StartServerProcess(GameServer server, string args)
-        {
-            //if (!string.IsNullOrEmpty(server.MultiHome)
-            //    & server.Port != 0
-            //    & server.QueryPort != 0
-            //    & server.RestartTime != 0)
-
-                var proc = new Process
+        public int StartServerProcess()
+        {            
+            switch (_server.ServerType)
             {
-                StartInfo = new ProcessStartInfo
+                case ServerTypeEnum.Ground_Branch:
+                    GBServer srv = (GBServer)_server;
+                    if (!string.IsNullOrEmpty(srv.MultiHome)
+                        & _server.Port != 0
+                        & _server.QueryPort != 0
+                        & srv.RestartTime != 0)
+
+                        proc = new Process
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+                                FileName = _server.ServerPath,
+                                WorkingDirectory = _server.ServerWorkinDir,
+                                Arguments = srv.GetProcessStartArgs(),
+                                UseShellExecute = false,
+                                RedirectStandardOutput = true,
+                                WindowStyle = ProcessWindowStyle.Hidden
+                            }
+
+                        };
+                    break;
+                case ServerTypeEnum.Operation_Harsh_Doorstop:
+                    break;
+                case ServerTypeEnum.SCP_5k:
+                    break;            
+            }
+
+            if (proc != null)
+            {
+                var process = proc.Start();
+                if (process)
                 {
-                    FileName = server.ServerPath,
-                    WorkingDirectory = server.ServerWorkinDir,
-                    Arguments = args,
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
+                    this.proc = proc;
+                    this.proc.OutputDataReceived += OutputRecieved;
+                    proc.BeginOutputReadLine();
+
+                    return this.proc.Id;
                 }
-
-            };
-            var process = proc.Start();
-
-            if (process)
-            {
-                this.proc = proc;
-                this.proc.OutputDataReceived += OutputRecieved;
-                proc.BeginOutputReadLine();
-
-                return this.proc.Id;
+                else
+                {
+                    this.proc = null;
+                    return 0;
+                }
             }
-            else
-            {
-                this.proc = null;
-                return 0;
-            }
-
+            return 0;
         }
 
         public void StopProcess()

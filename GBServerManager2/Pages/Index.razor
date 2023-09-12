@@ -102,6 +102,11 @@
         StateHasChanged();
     }
 
+    private void StartServer(GameServer Server)
+    {
+        Server.serverProc.StartServerProcess();
+    }
+
     private async void DeleteServer(GameServer Server)
     {
         var result = await _ds.Confirm($"Are you sure you wish to delete {Server.ServerName}?", "Delete Server", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" });
