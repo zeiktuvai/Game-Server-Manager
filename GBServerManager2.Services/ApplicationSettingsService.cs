@@ -1,14 +1,14 @@
-﻿using GBServerManager2.Data;
-using GBServerManager2.Models;
-using GBServerManager2.Models.Enums;
-using GBServerManager2.Models.Options;
+﻿using GameServerManager.Data;
+using GameServerManager.Models;
+using GameServerManager.Models.Enums;
+using GameServerManager.Models.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GBServerManager2.Services
+namespace GameServerManager.Services
 {
     public class ApplicationSettingsService
     {

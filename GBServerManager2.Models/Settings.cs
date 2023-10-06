@@ -1,4 +1,4 @@
-﻿namespace GBServerManager2.Models
+﻿namespace GameServerManager.Models
 {
     internal class Settings
     {

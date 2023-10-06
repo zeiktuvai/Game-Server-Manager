@@ -1,13 +1,8 @@
-﻿using LiteDB;
+﻿using GameServerManager.Models.Options;
+using LiteDB;
 using Microsoft.Extensions.Options;
-using GBServerManager2.Models.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GBServerManager2.Data
+namespace GameServerManager.Data
 {
     public class LiteDbContext
     {

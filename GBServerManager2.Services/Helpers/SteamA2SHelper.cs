@@ -1,12 +1,9 @@
-﻿using GBServerManager2.Models;
-using System;
-using System.IO;
+﻿using GameServerManager.Models.Servers;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
-namespace GBServerManager2.Services.Helpers
+namespace GameServerManager.Services.Helpers
 {
     internal static class SteamA2SHelper
     {

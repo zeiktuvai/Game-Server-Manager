@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Validators;
 
-namespace GBServerManager2.Validator
+namespace GameServerManager.Web.Validator
 {
     public class GBServerValidator : AbstractValidator<GBServer>
     {

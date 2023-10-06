@@ -1,13 +1,14 @@
-﻿using GBServerManager2.Models;
+﻿using GameServerManager.Models.Servers;
+using GameServerManager.Models;
 using System;
 using System.Diagnostics;
 using System.IO.Compression;
 using System.Net;
 using System.Text;
 using System.Xml.Serialization;
-using static GBServerManager2.Models.GameServerProcess;
+using static GameServerManager.Models.Servers.GameServerProcess;
 
-namespace GBServerManager2.Services.Helpers
+namespace GameServerManager.Services.Helpers
 {
     public class SteamCMDHelper
     {

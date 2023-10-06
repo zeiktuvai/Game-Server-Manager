@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using GameServerManager.Models.Servers;
 
-namespace GBServerManager2.Models
+namespace GameServerManager.Models
 {
     public class ServerList
     {

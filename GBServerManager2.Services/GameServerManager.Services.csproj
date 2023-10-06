@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GBServerManager2.Data\GBServerManager2.Data.csproj" />
-    <ProjectReference Include="..\GBServerManager2.Models\GBServerManager2.Models.csproj" />
+    <ProjectReference Include="..\GBServerManager2.Data\GameServerManager.Data.csproj" />
+    <ProjectReference Include="..\GBServerManager2.Models\GameServerManager.Models.csproj" />
   </ItemGroup>
 
 </Project>

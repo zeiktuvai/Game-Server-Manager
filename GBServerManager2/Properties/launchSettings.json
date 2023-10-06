@@ -8,7 +8,7 @@
     }
   },
   "profiles": {
-    "GBServerManager2": {
+    "GameServerManager.Web": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

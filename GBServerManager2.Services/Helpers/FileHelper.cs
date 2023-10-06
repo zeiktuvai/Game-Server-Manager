@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GBServerManager2.Services.Helpers
+﻿namespace GameServerManager.Services.Helpers
 {
     public static class FileHelper
     {

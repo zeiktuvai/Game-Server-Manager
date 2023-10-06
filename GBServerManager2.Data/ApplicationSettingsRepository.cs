@@ -1,14 +1,10 @@
-﻿using GBServerManager2.Models;
-using GBServerManager2.Models.Enums;
-using GBServerManager2.Models.Options;
+﻿using GameServerManager.Models;
+using GameServerManager.Models.Enums;
+using GameServerManager.Models.Options;
 using LiteDB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GBServerManager2.Data
+
+namespace GameServerManager.Data
 {
     public class ApplicationSettingsRepository
     {

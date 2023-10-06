@@ -1,4 +1,5 @@
-﻿global using GBServerManager2.Models;
-global using GBServerManager2.Data;
-global using GBServerManager2.Services;
-global using GBServerManager2.Models.Enums;
+﻿global using GameServerManager.Models;
+global using GameServerManager.Data;
+global using GameServerManager.Services;
+global using GameServerManager.Models.Enums;
+global using GameServerManager.Models.Servers;

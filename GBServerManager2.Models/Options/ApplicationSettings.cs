@@ -1,6 +1,6 @@
-﻿using GBServerManager2.Models.Enums;
+﻿using GameServerManager.Models.Enums;
 
-namespace GBServerManager2.Models.Options
+namespace GameServerManager.Models.Options
 {
     public class ApplicationSettings
     {
