@@ -49,9 +49,9 @@ namespace GBServerManager2.Models
         public event procOutputUpdateHandler outputUpdated;
         private GameServer _server;
 
-        public GameServerProcess(GameServer server)
+        public GameServerProcess()
         {
-            this._server = server;
+            //this._server = server;
         }
 
         /// <summary>

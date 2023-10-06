@@ -7,16 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\**" />
+    <EmbeddedResource Remove="Data\**" />
+    <None Remove="Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="LiteDB" Version="5.0.16" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GBServerManager2.Models\GBServerManager2.Models.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>
