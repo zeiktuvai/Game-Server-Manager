@@ -1,7 +1,7 @@
-﻿using GBServerManager2.Models.Enums;
+﻿using GameServerManager.Models.Enums;
 using LiteDB;
 
-namespace GBServerManager2.Models
+namespace GameServerManager.Models.Servers
 {
     public class OHDServer : GameServer
     {

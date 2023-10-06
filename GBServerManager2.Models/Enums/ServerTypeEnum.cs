@@ -1,4 +1,4 @@
-﻿namespace GBServerManager2.Models.Enums
+﻿namespace GameServerManager.Models.Enums
 {
     public enum ServerTypeEnum
     {

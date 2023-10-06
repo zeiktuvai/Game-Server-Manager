@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GBServerManager2.Models.Enums
+namespace GameServerManager.Models.Enums
 {public enum SettingsNameEnum
     {
         ApplicationSettings = 0,

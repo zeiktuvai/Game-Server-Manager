@@ -1,10 +1,10 @@
-﻿using GBServerManager2.Models;
-using GBServerManager2.Models.Enums;
+﻿using GameServerManager.Models.Servers;
+using GameServerManager.Models.Enums;
 using System.IO;
 using System.Text;
 
 
-namespace GBServerManager2.Services
+namespace GameServerManager.Services
 {
     public static class GBServerHelper
     {

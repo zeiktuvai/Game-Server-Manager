@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GBServerManager2.Models.Servers
+namespace GameServerManager.Models.Servers
 {
     internal class ArmaServer : GameServer
     {

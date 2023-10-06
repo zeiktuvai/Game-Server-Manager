@@ -1,4 +1,4 @@
-﻿namespace GBServerManager2.Models.Options
+﻿namespace GameServerManager.Models.Options
 {
     public class LiteDbOptions
     {

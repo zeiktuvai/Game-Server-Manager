@@ -1,11 +1,11 @@
-﻿using GBServerManager2.Models.Enums;
+﻿using GameServerManager.Models.Enums;
 using LiteDB;
 using System.Diagnostics;
 
-namespace GBServerManager2.Models
+namespace GameServerManager.Models.Servers
 {
     public class GBServer : GameServer
-    {        
+    {
         public string ServerBasePath { get; set; }
         public string ServerMOTD { get; set; }
         public string SpectatorOnlyPassword { get; set; }
@@ -28,7 +28,7 @@ namespace GBServerManager2.Models
 
         public string GetProcessStartArgs()
         {
-            return $"Multihome={this.MultiHome} Port={this.Port} QueryPort={this.QueryPort} ScheduledShutdownTime={this.RestartTime} -LOCALLOGTIMES - log";
+            return $"Multihome={MultiHome} Port={Port} QueryPort={QueryPort} ScheduledShutdownTime={RestartTime} -LOCALLOGTIMES - log";
         }
 
         public bool InitialServerStart()
@@ -39,7 +39,7 @@ namespace GBServerManager2.Models
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = base.ServerPath,
+                        FileName = ServerPath,
                         Arguments = GetProcessStartArgs()
                     }
 

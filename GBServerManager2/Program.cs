@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.Hosting.WindowsServices;
 using Radzen;
-using GBServerManager2.Models.Options;
-using GBServerManager2.Data;
+using GameServerManager.Models.Options;
+using GameServerManager.Data;
 using FluentValidation;
-using GBServerManager2.Validator;
+using GameServerManager.Web.Validator;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 {

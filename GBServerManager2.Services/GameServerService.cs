@@ -1,9 +1,10 @@
-﻿using GBServerManager2.Data;
-using GBServerManager2.Models;
-using GBServerManager2.Models.Enums;
-using GBServerManager2.Services.Helpers;
+﻿using GameServerManager.Models.Servers;
+using GameServerManager.Data;
+using GameServerManager.Models;
+using GameServerManager.Models.Enums;
+using GameServerManager.Services.Helpers;
 
-namespace GBServerManager2.Services
+namespace GameServerManager.Services
 {
     public class GameServerService
     {
