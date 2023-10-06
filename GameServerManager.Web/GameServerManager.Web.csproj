@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GBServerManager2.Data\GameServerManager.Data.csproj" />
-    <ProjectReference Include="..\GBServerManager2.Models\GameServerManager.Models.csproj" />
-    <ProjectReference Include="..\GBServerManager2.Services\GameServerManager.Services.csproj" />
+    <ProjectReference Include="..\GameServerManager.Data\GameServerManager.Data.csproj" />
+    <ProjectReference Include="..\GameServerManager.Models\GameServerManager.Models.csproj" />
+    <ProjectReference Include="..\GameServerManager.Services\GameServerManager.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
