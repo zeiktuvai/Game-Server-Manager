@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GBServerManager2.Models\GameServerManager.Models.csproj" />
+    <ProjectReference Include="..\GameServerManager.Models\GameServerManager.Models.csproj" />
   </ItemGroup>
 
 </Project>
