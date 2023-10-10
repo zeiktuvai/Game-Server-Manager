@@ -2,6 +2,8 @@
 
 @using GameServerManager.Services.Helpers
 
+@inject GameServerService _gss
+
 <h3>Servers</h3>
 
 <div class="row">
@@ -30,14 +32,15 @@
     protected override void OnInitialized()
     {
         server = new GBServer() { ServerBasePath = "C:\\GBS-Private\\GroundBranch\\Binaries\\Win64\\", ServerPath = "C:\\GBS-Private\\GroundBranch\\Binaries\\Win64\\GroundBranchServer-Win64-Shipping.exe",
-        MultiHome = "0.0.0.0", Port = 7776, QueryPort = 27614, RestartTime = 12};
-        server.serverProc.outputUpdated += () => InvokeAsync(StateHasChanged);
+                MultiHome = "0.0.0.0", Port = 7776, QueryPort = 27614, RestartTime = 12, ServerType = ServerTypeEnum.Ground_Branch, serverProc = new RunningProcess()};
+
         //proc.outputUpdated += () => _js.InvokeVoidAsync("scrollToEnd", new object[] { textArea.Element });
     }
 
     private void onClick()
     {
-        //server._ServerPID = server.serverProc.StartServerProcess(server, server.GetProcessStartArgs());
+        _gss.StartServerProcess(server);
+        server.serverProc.outputUpdated += () => InvokeAsync(StateHasChanged);
     }
 
     private void refreshOutput()
@@ -49,6 +52,6 @@
 
     private void stopProc()
     {
-        server.serverProc.StopProcess();
+        _gss.StopProcess(server);
     }
 }

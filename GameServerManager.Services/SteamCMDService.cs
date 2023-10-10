@@ -49,7 +49,7 @@ namespace GameServerManager.Services
             return true;
         }
 
-        public Process ExecuteSteamCMDRequest(SteamCMDRequest request)
+        public RunningProcess ExecuteSteamCMDRequest(SteamCMDRequest request)
         {
             if (!string.IsNullOrWhiteSpace(request.DownloadPath))
             {
@@ -58,18 +58,22 @@ namespace GameServerManager.Services
                     FileHelper.CreateDirectory(request.DownloadPath);                    
                 }
 
-                var procReq = new ProcessRequest {
-                    FilePath = request.SteamCMDPath,
+                var procReq = new ProcessRequest
+                {
+                    ExecutablePath = request.SteamCMDPath,
+                    WorkingDir = GlobalConstants.SteamCommandPath,
                     Arguments = request.GetSteamCMDArguments(),
-                    UseShell = false,
-                    RedirectOutput = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                    };
+                };
 
                 return _ps.StartProcess(procReq);
             }
 
-            return new Process();
+            return null;
+        }
+
+        public bool CheckSteamClientExists()
+        {
+            return FileHelper.CheckFileExists(GlobalConstants.SteamCommandPath + "\\steamcmd.exe");
         }
 
     }

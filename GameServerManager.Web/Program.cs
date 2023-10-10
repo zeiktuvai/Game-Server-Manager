@@ -28,7 +28,7 @@ builder.Services.AddScoped<GameServerRepository>();
 builder.Services.AddScoped<ApplicationSettingsService>();
 builder.Services.AddScoped<GameServerService>();
 builder.Services.AddScoped<SteamCMDService>();
-builder.Services.AddScoped<ProcessService>();
+builder.Services.AddSingleton<ProcessService>();
 
 builder.Services.AddScoped<IValidator<GBServer>, GBServerValidator>();
 

@@ -4,6 +4,7 @@ using GameServerManager.Models;
 using GameServerManager.Models.Enums;
 using GameServerManager.Services.Helpers;
 using GameServerManager.Models.Request;
+using System.Diagnostics;
 
 namespace GameServerManager.Services
 {
@@ -11,12 +12,14 @@ namespace GameServerManager.Services
     {
         public ServerList List = new ServerList();
         private GameServerRepository _gsr { get; set; }
-        public SteamCMDService _scs { get; set; }
+        private SteamCMDService _scs { get; set; }
+        private ProcessService _procSvc { get; set; }
 
-        public GameServerService(GameServerRepository gsr, SteamCMDService scs)
+        public GameServerService(GameServerRepository gsr, SteamCMDService scs, ProcessService procSvc)
         {
             _gsr = gsr;
             _scs = scs;
+            _procSvc = procSvc;
             UpdateGameServers();
         }
         //TODO: Pull out process aspect into it's own singleton class
@@ -37,20 +40,20 @@ namespace GameServerManager.Services
                     path = GetNewServerDirectory(serverBaseDir, server.ServerType);
                     (server as GBServer).ServerBasePath = path;
                     server.ServerWorkinDir = path;
-                    server.serverProc = new GameServerProcess { proc = SteamCMDHelper.DownloadUpdateNewServer(server) };             
+                    //server.serverProc = new GameServerProcess { proc = SteamCMDHelper.DownloadUpdateNewServer(server) };             
                     break;
                 
                 case ServerTypeEnum.Arma_3:
                     path = GetNewServerDirectory(serverBaseDir, server.ServerType);
                     (server as ArmaServer).ServerBasePath = path;
                     server.ServerWorkinDir = path;
-                    server.serverProc = new GameServerProcess { proc = _scs.ExecuteSteamCMDRequest( new SteamCMDRequest
+                    server.serverProc = _scs.ExecuteSteamCMDRequest( new SteamCMDRequest
                     {
                         DownloadPath = path,
                         SteamAppId = (server as ArmaServer).SteamAppId,
                         AnonymousLogin = true,
                         SteamCMDPath = GlobalConstants.SteamCommandPath
-                    })};
+                    });
                     break;
             }
 
@@ -192,6 +195,50 @@ namespace GameServerManager.Services
             }
 
             return null;
+        }
+
+
+
+
+
+
+        public bool StartServerProcess(GameServer server)
+        {
+            ProcessRequest req = null;
+
+            switch (server.ServerType)
+            {
+                case ServerTypeEnum.Ground_Branch:                    
+                    GBServer srv = (GBServer)server;
+                    req = new ProcessRequest { ExecutablePath = srv.ServerPath, WorkingDir = srv.ServerBasePath, Arguments = srv.GetProcessStartArgs() };                        
+                    break;
+                case ServerTypeEnum.Operation_Harsh_Doorstop:
+                    break;
+                case ServerTypeEnum.SCP_5k:
+                    break;
+            }
+
+            if (req != null)
+            {
+                server.serverProc = _procSvc.StartServerProcess(req);
+                return true;
+            }
+            return false;
+        }
+
+        public void StopProcess(GameServer server)
+        {
+            _procSvc.StopServerProcess(new ProcessRequest { PID = server.serverProc.proc.Id });
+        }
+
+        /// <summary>
+        /// Checks the provided PID to see if a process is running under that PID.
+        /// </summary>
+        /// <param name="serverPID"></param>
+        /// <returns>Returns True if the process is running, otherwise it returns False.</returns>
+        public bool GetServerProcessStatus(GameServer server)
+        {
+            return _procSvc.CheckProcessRunning(new ProcessRequest { PID = server.serverProc.proc.Id, ExecutablePath = server.ServerPath });
         }
     }
 }

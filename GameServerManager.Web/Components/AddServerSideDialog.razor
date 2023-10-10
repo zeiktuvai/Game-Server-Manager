@@ -4,6 +4,7 @@
 
 @inject ApplicationSettingsService _asr
 @inject GameServerService _gss
+@inject SteamCMDService _scs
 
 <div class="rz-p-4 rz-text-align-center">
     <RadzenSelectBar @bind-Value="isExistingServer" Change="ServerLocChanged" TValue="bool" class="mb-5">
@@ -219,7 +220,7 @@
         // _ds.Open("", ds => @<RadzenStack AlignItems="AlignItems.Center" Gap="2rem" Class="rz-p-12"> <RadzenText TextStyle="TextStyle.H6">Setting up Server, please wait...</RadzenText></RadzenStack>
         //     , new DialogOptions() { ShowTitle = false, Style = "min-height:auto;min-width:auto;width:auto", CloseDialogOnEsc = false }
         // );        
-    
+
         await Task.Delay(1000);
 
         _gss.AddNewGameServer(addServer, (ServerTypeEnum)selectedType.Item2);        
@@ -230,9 +231,9 @@
 
     private async void OnHandleValidSubmit()
     {
-        if (!SteamCMDHelper.CheckSteamClientExists())
+        if (!_scs.CheckSteamClientExists())
         {
-            await SteamCMDHelper.DownloadSteamClient();
+            await _scs.DownloadSteamClient();
         }
 
         try
