@@ -2,6 +2,9 @@
 
 :root {
     --color-offWhite: #d7d7d7;
+    --color-navbardark: #37392E;
+    --color-navbarlight: #5C5E4C;
+    --rz-editor-content-background-color: #000000;
 }
 
 html, body {
@@ -70,7 +73,3 @@ h2, h3, h4 {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
-
-:root {
-    --rz-editor-content-background-color: #000000;
-}

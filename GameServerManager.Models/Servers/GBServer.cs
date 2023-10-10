@@ -6,7 +6,6 @@ namespace GameServerManager.Models.Servers
 {
     public class GBServer : GameServer
     {
-        public string ServerBasePath { get; set; }
         public string ServerMOTD { get; set; }
         public string SpectatorOnlyPassword { get; set; }
         public string MultiHome { get; set; }

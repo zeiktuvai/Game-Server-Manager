@@ -6,6 +6,7 @@ using GameServerManager.Models.Options;
 using GameServerManager.Data;
 using FluentValidation;
 using GameServerManager.Web.Validator;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 {
@@ -16,13 +17,18 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions()
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddMudServices();
 builder.Services.AddScoped<DialogService>();
 builder.Services.Configure<LiteDbOptions>(builder.Configuration.GetSection("LiteDbOptions"));
 builder.Services.AddSingleton<LiteDbContext>();
+
 builder.Services.AddScoped<ApplicationSettingsRepository>();
+builder.Services.AddScoped<GameServerRepository>();
+
 builder.Services.AddScoped<ApplicationSettingsService>();
-builder.Services.AddSingleton<GameServerRepository>();
-builder.Services.AddSingleton<GameServerService>();
+builder.Services.AddScoped<GameServerService>();
+builder.Services.AddScoped<SteamCMDService>();
+builder.Services.AddScoped<ProcessService>();
 
 builder.Services.AddScoped<IValidator<GBServer>, GBServerValidator>();
 

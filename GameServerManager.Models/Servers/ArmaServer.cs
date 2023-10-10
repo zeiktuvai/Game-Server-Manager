@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameServerManager.Models.Servers
 {
-    internal class ArmaServer : GameServer
+    public class ArmaServer : GameServer
     {
         public string ProfilePath { get; set; }
         public string BattleEyePath { get; set; }
@@ -18,5 +18,10 @@ namespace GameServerManager.Models.Servers
         public int BandwidthAlgorithm { get; set; }
         public int MaxMemory { get; set; }
         public IEnumerable<string> ModList { get; set; }
+
+        public ArmaServer()
+        {
+            ServerType = Enums.ServerTypeEnum.Arma_3;
+        }
     }
 }

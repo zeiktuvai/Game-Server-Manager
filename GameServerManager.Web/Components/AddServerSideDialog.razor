@@ -204,7 +204,7 @@
         var serverBaseDir = _asr.GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).First().Value;
 
         _ds.CloseSide();
-        addServer = _gss.GenerateServerProcess(addServer, serverBaseDir, (ServerTypeEnum)selectedType.Item2);
+        addServer = _gss.SendSteamCMDAction(addServer, serverBaseDir, (ServerTypeEnum)selectedType.Item2);
 
         //TODO: Disabled downloading for speedy testing
         // await _ds.OpenAsync<ProcessConsoleDialog>("Download Game Server",

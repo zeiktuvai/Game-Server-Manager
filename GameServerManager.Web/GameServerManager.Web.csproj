@@ -9,7 +9,8 @@
   <ItemGroup>
     <PackageReference Include="Blazored.FluentValidation" Version="2.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
-    <PackageReference Include="Radzen.Blazor" Version="4.13.6" />
+    <PackageReference Include="MudBlazor" Version="6.11.0" />
+    <PackageReference Include="Radzen.Blazor" Version="4.17.0" />
   </ItemGroup>
 
   <ItemGroup>

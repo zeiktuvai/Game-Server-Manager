@@ -1,0 +1,24 @@
+﻿@page "/server/arma"
+
+<div style="height: 100vh; overflow: hidden; position:relative; margin-left: -32px; margin-top: -17.6px">
+    <MudDrawerContainer Class="mud-height-full">
+        <MudDrawer @bind-Open="@open" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true" Style="background-color: #37392E; color: var(--color-offWhite)">
+            <MudNavMenu>
+                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Storage" IconColor="Color.Surface">Server 1</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+        <div class="d-flex">
+            <RadzenCard Variant="Radzen.Variant.Flat" class="rz-m-12" Style="background-color: var(--color-navbarlight)">
+                <h3>Arma</h3>
+            </RadzenCard>
+        </div>
+    </MudDrawerContainer>
+</div>
+
+
+
+@code {
+    ArmaServer server = new();
+    bool open = false;
+
+}

@@ -6,5 +6,15 @@
         {
             return Directory.Exists(path);
         }
+
+        public static DirectoryInfo CreateDirectory(string path)
+        {
+            return Directory.CreateDirectory(path);
+        }
+
+        public static bool CheckFileExists(string file)
+        {
+            return File.Exists(file);
+        }
     }
 }

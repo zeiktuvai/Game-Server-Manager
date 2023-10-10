@@ -17,6 +17,7 @@ namespace GameServerManager.Models.Servers
         public ServerTypeEnum ServerType { get; set; }
         public string ServerName { get; set; }
         public string ServerPath { get; set; }
+        public string ServerBasePath { get; set; }
         public string ServerWorkinDir { get; set; }
         public int Port { get; set; }
         public int QueryPort { get; set; }
@@ -53,7 +54,7 @@ namespace GameServerManager.Models.Servers
         {
             //this._server = server;
         }
-
+        //TODO: Refactor This
         /// <summary>
         /// Tries to start a game server.  Returns PID if successful, 0 if failed.
         /// </summary>
