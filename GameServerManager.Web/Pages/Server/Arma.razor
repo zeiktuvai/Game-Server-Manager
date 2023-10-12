@@ -1,25 +1,16 @@
 ﻿@page "/server/arma"
 
-@* <div style="height: 100vh; overflow: hidden; position:relative; margin-left: -32px; margin-top: -17.6px">
-    <MudDrawerContainer Class="mud-height-full">
-        <MudDrawer @bind-Open="@open" Fixed="false" Elevation="1" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true" Style="background-color: #37392E; color: var(--color-offWhite)">
-            <MudNavMenu>
-                <MudNavLink Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Storage" IconColor="Color.Surface">Server 1</MudNavLink>
-            </MudNavMenu>
-        </MudDrawer>
-        <div class="d-flex">
-        </div>
-    </MudDrawerContainer>
-</div> *@
-<RadzenRow Gap="1rem" class="rz-mx-12">
+
+
+<RadzenRow Gap="1rem" class="rz-mx-8">
     <RadzenColumn Size="8">
-        <RadzenCard Variant="Radzen.Variant.Filled"  Style="background-color: #B58B00">
+        <RadzenCard Variant="Radzen.Variant.Filled" Style="background-color: #B58B00">
             <h3>Server Name</h3>
             <span>Port: </span>
             <span>Mods:</span>
         </RadzenCard>
     </RadzenColumn>
-    <RadzenColumn>
+    <RadzenColumn Size="8">
         <RadzenCard Variant="Radzen.Variant.Filled" Style="background-color: var(--color-navbarlight)">
             <h3>Installed Mods</h3>
             <span>Mod 1 </span>
@@ -27,8 +18,6 @@
         </RadzenCard>
     </RadzenColumn>
 </RadzenRow>
-
-
 
 @code {
     ArmaServer server = new();
