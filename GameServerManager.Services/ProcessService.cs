@@ -15,6 +15,11 @@ namespace GameServerManager.Services
             RunningProcesses = new();
         }
 
+        public List<RunningProcess> GetRunningProcesses()
+        {
+            return RunningProcesses;
+        }
+
         public RunningProcess StartProcess(ProcessRequest request)
         {
             var proc = new Process
