@@ -83,19 +83,48 @@ namespace GameServerManager.Services
 
         public bool AddExistingGameServer(string basePath, ServerTypeEnum serverType)
         {
-            if (serverType == ServerTypeEnum.Ground_Branch)
-            {
-                var server = GBServerHelper.FindGBServerExecutable(basePath);
-                if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
-                {
-                    server = GBServerHelper.RetrieveGBServerProperties(server);
-                    server.ServerType = serverType;
-                    _gsr.AddGameServer(server, serverType);
-                    UpdateGameServers();
-                    return true;
-                }
+            GameServer server = new();
 
-                throw new Exception("Server exists in collection.");
+            switch (serverType)
+            {
+                case ServerTypeEnum.Ground_Branch:
+                    server = GBServerHelper.FindGBServerExecutable(basePath);
+                    if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
+                    {
+                        server = GBServerHelper.RetrieveGBServerProperties((GBServer)server);
+                        server.ServerType = serverType;
+                        _gsr.AddGameServer(server, serverType);
+                        UpdateGameServers();
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("Server exists in collection.");
+                    }
+
+                case ServerTypeEnum.Arma_3:
+                    var exeFound = FileHelper.CheckFileExists(basePath + "\\arma3server_x64.exe");
+                    if (exeFound)
+                    {
+                        server = new ArmaServer
+                        {
+                            ServerBasePath = basePath,
+                            ServerWorkinDir = basePath,
+                            ServerPath = FileHelper.GetFilePath(basePath, "arma3server_x64.exe"),
+                            ProfilePath = ".\\profile",
+                            ServerType = ServerTypeEnum.Arma_3,                            
+                        };
+
+                        if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
+                        {
+                            ArmaServerHelper.GetServerProperties(basePath);
+                            //amra3serverhelper.getserverinfo
+                            //_gsr.AddGameServer(server, ServerTypeEnum.Arma_3);
+                            UpdateGameServers();
+                            return true;
+                        }
+                    }
+                    return false;
             }
             return false;
         }
@@ -197,11 +226,6 @@ namespace GameServerManager.Services
             return null;
         }
 
-
-
-
-
-
         public bool StartServerProcess(GameServer server)
         {
             ProcessRequest req = null;
@@ -239,6 +263,23 @@ namespace GameServerManager.Services
         public bool GetServerProcessStatus(GameServer server)
         {
             return _procSvc.CheckProcessRunning(new ProcessRequest { PID = server.serverProc.proc.Id, ExecutablePath = server.ServerPath });
+        }
+
+        public bool CheckServersExist(ServerTypeEnum type)
+        {
+            switch (type)
+            {
+                case ServerTypeEnum.Ground_Branch:
+                    return List.Servers.Any(s => s.ServerType == ServerTypeEnum.Ground_Branch);
+                case ServerTypeEnum.Operation_Harsh_Doorstop:
+                    return List.Servers.Any(s => s.ServerType == ServerTypeEnum.Operation_Harsh_Doorstop);
+                case ServerTypeEnum.SCP_5k:
+                    return List.Servers.Any(s => s.ServerType == ServerTypeEnum.SCP_5k);
+                case ServerTypeEnum.Arma_3:
+                    return List.Servers.Any(s => s.ServerType == ServerTypeEnum.Arma_3);
+                default:
+                    return false;
+            }
         }
     }
 }

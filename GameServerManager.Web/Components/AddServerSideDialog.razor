@@ -14,9 +14,9 @@
         </Items>
     </RadzenSelectBar>
 </div>
-<div class="row">
-    <span>Server Type</span>
-    <RadzenDropDown @bind-Value=@selectedType Change="ServerTypeChanged" Data=@games>
+<div class="form-group">
+    <label for="serverType">Server Type</label>
+    <RadzenDropDown class="form-control" id="serverType" @bind-Value=@selectedType Change="ServerTypeChanged" Data=@games>
         <Template>
             @((context as Tuple<string, int>).Item1)
         </Template>
@@ -103,9 +103,9 @@
 
 @if (isExistingServer == true)
 {
-    <div class="row">
-        <span>Server path</span>
-        <input type="text" @bind-value="serverPath" />
+    <div class="form-group">
+        <label for="path">Server path</label>
+        <input type="text" class="form-control" id="path" @bind-value="serverPath" />
     </div>
     @if (showExeBanner)
     {

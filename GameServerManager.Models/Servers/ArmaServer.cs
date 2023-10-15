@@ -22,6 +22,7 @@ namespace GameServerManager.Models.Servers
         public ArmaServer()
         {
             ServerType = Enums.ServerTypeEnum.Arma_3;
+            SteamAppId = "233780";
         }
     }
 }
