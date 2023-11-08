@@ -1,5 +1,6 @@
 ﻿@using GameServerManager.Services.Helpers
 @using GameServerManager.Models.Options
+@using GameServerManager.Models.Request
 @using Blazored.FluentValidation
 
 @inject ApplicationSettingsService _asr
@@ -14,8 +15,10 @@
         </Items>
     </RadzenSelectBar>
 </div>
-<div class="form-group">
-    <label for="serverType">Server Type</label>
+<div class="input-group">
+    <div class="input-group-prepend" style="width: 150px">
+        <span class="input-group-text">Server Type</span>
+    </div>
     <RadzenDropDown class="form-control" id="serverType" @bind-Value=@selectedType Change="ServerTypeChanged" Data=@games>
         <Template>
             @((context as Tuple<string, int>).Item1)
@@ -37,25 +40,36 @@
         <EditForm Model="@addServer" OnValidSubmit="OnHandleValidSubmit">
             <FluentValidationValidator DisableAssemblyScanning="@true"/>
 
-            <div class="row mb-1">                
-                <span>Server Name</span>
-                <InputText class="ms-2 me-2" @bind-Value="addServer.ServerName" />
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" style="width: 150px">Server Name</span>
+                </div>
+                <InputText class="form-control" @bind-Value="addServer.ServerName" />
             </div>
 
-            <div class="row">
-                <div class="col-sm-6">
-                    <p class="mt-1 mb-2">Max Players</p>
-                    <p class="me-5 mt-1 mb-2">Port</p>
-                    <p class="mt-2 mb-2">Query Port</p>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend" style="width: 150px">
+                    <span class="input-group-text">Max Players</span>
                 </div>
-
-                <div class="col-sm-6">
-                    <InputNumber class="mb-1" style="width: 100px" @bind-Value="addServer.MaxPlayers" />
-                    <InputNumber class="mb-1" style="width: 100px" @bind-Value="addServer.Port" />
-                    <InputNumber class="mb-1" style="width: 100px" @bind-Value="addServer.QueryPort" />
-                </div>
-
+                 <InputNumber class="form-control" @bind-Value="addServer.MaxPlayers" />
             </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend" style="width: 150px">
+                    <span class="input-group-text" >Port</span>
+                </div>
+                    <InputNumber class="form-control" @bind-Value="addServer.Port" />
+            </div>
+
+            @if (selectedType.Item2 != (int)ServerTypeEnum.Arma_3)
+            {
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend" style="width: 150px">
+                        <span class="input-group-text">Query Port</span>
+                    </div>
+                    <InputNumber class="form-control" @bind-Value="addServer.QueryPort" />
+                </div>
+            }
 
             @if (selectedType.Item2 == (int)ServerTypeEnum.Ground_Branch)
             {
@@ -66,24 +80,77 @@
                         <p class="mt-1">Multi-Home</p>
                     </div>
                     <div class="col-sm-6">
-                        <InputNumber class="mb-1" style="width: 100px" @bind-Value="(addServer as GBServer).MaxSpectators" />
-                        <InputNumber class="mb-1" style="width: 100px" @bind-Value="(addServer as GBServer).RestartTime" />
-                        <InputText class="mb-1" style="width: 150px" @bind-Value="(addServer as GBServer).MultiHome" />
+                        <InputNumber class="mb-1" style="width: 100px" @bind-Value="_maxSpectators" />
+                        <InputNumber class="mb-1" style="width: 100px" @bind-Value="_restartTime" />
+                        <InputText class="mb-1" style="width: 150px" @bind-Value="_multiHome" />
                     </div>
                 </div>
             }
+
+            @if (selectedType.Item2 == (int)ServerTypeEnum.Arma_3)
+            {
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend" style="width: 150px">
+                        <span class="input-group-text">Admin Password</span>
+                    </div>
+                    <InputText class="form-control" @bind-Value="_adminPassword" />                       
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend" style="width: 150px">
+                        <span class="input-group-text">World</span>
+                    </div>
+                        <InputText class="form-control" @bind-Value="_serverWorld" />                        
+                </div>
+            }
+
             @if (addServer._IsPrivateServer)
             {
-                <div class="row">
-                <p class="mb-1">Server Password</p>
-                <InputText class="ms-2 me-2" @bind-Value="addServer.ServerPassword" />
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend" style="width: 150px">
+                        <span class="input-group-text">Server Password</span>
+                    </div>
+                    <InputText class="form-control" @bind-Value="addServer.ServerPassword" />
+                </div>
 
                 @if (selectedType.Item2 == (int)ServerTypeEnum.Ground_Branch)
                 {
-                    <p class="mb-1">Spectator Only Password</p>
-                    <InputText class="ms-2 me-2" @bind-Value="(addServer as GBServer).SpectatorOnlyPassword" />
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend" style="width: 150px">
+                            <span class="input-group-text">Spectator Only Password</span>
+                        </div>
+                        <InputText class="form-control" @bind-Value="_spectatorPassword" />
+                </div>
                 }
 
+            }
+
+            @if (selectedType.Item2 == (int)ServerTypeEnum.Arma_3)
+            {
+                <div class="row">
+                    <div class="border border-primary rounded">
+                        <span class="text-primary fs-5">Steam Credentials</span>
+                        <div class="input-group mb-3">
+                            <div Class="input-group-prepend" style="width: 150px">
+                                <span class="input-group-text">Username</span>
+                            </div>                            
+                            <InputText class="form-control" style="" @bind-Value="_steamUser" />
+                        </div>
+                        <div class="input-group mb-3 flex-nowrap">
+                            <div Class="input-group-prepend" >
+                                <span class="input-group-text">Password</span>     
+                                <div class="input-group-text">
+                                    <button class="btn btn-outline-secondary" type="button">S</button>
+                                </div>
+                            </div>
+                            <InputText type="password" class="form-control" @bind-Value="_steamPass" />
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend" style="width: 150px">
+                                <span class="input-group-text">Steam Guard Key</span>
+                            </div>
+                            <InputText class="form-control" @bind-Value="_steam2FA" />
+                        </div>
+                    </div>
                 </div>
             }
 
@@ -127,7 +194,7 @@
 
 @code {
     [Inject] DialogService _ds { get; set; }
-    GameServer addServer = new GBServer();
+    GameServer addServer = new ();
     List<Tuple<string, int>> games;
     private Tuple<string, int> selectedType;
     private string serverPath = "";
@@ -140,14 +207,22 @@
     private string exeBannerText = "";
     private string errorText = "";
 
+    private int _maxSpectators = 0;
+    private int _restartTime = 12;
+    private string _multiHome = "0.0.0.0";
+    private string _spectatorPassword = string.Empty;
+    private string _serverWorld = "empty";
+    private string _adminPassword = string.Empty;
+
+    private string _steamUser = string.Empty;
+    private string _steamPass = string.Empty;
+    private string _steam2FA = string.Empty;
+
 
     protected override void OnInitialized()
     {
         games = new List<Tuple<string, int>>();
-        foreach (var item in Enum.GetValues(typeof(ServerTypeEnum)))
-        {
-            games.Add(new Tuple<string, int>(Enum.GetName(typeof(ServerTypeEnum), item).Replace('_', ' '), (int)item));
-        }
+        games = GetGamesList();
 
         rootPathSet = _asr.CheckServerPathSet();
         addDisabled = rootPathSet ? false : true;
@@ -156,7 +231,8 @@
     private void ServerLocChanged()
     {
         addDisabled = rootPathSet == true ? false : isExistingServer == true && addDisabled == true ? false : true;
-        selectedType = null;
+        //selectedType = null;
+        games = GetGamesList(isExistingServer);
         StateHasChanged();
     }
 
@@ -178,6 +254,11 @@
                 break;
             case 1:
                 addServer = new OHDServer();
+                break;
+            case 3:
+                addServer = new ArmaServer();
+                addServer.ServerType = ServerTypeEnum.Arma_3;
+                (addServer as ArmaServer).ServerWorld = "empty";
                 break;
         }
     }
@@ -203,10 +284,33 @@
     private async void AddNewServer()
     {        
         var serverBaseDir = _asr.GetApplicationSettings().Settings.Where(s => s.Key == GlobalConstants.ServerBasePath && !string.IsNullOrWhiteSpace(s.Value)).First().Value;
+        GameServer serv = new();
+        CredentialRequest? cred = null;
+
+        switch (selectedType.Item2)
+        {
+            case 0:
+                var gbsrv = addServer as GBServer;
+                gbsrv.MaxSpectators = _maxSpectators;
+                gbsrv.RestartTime = _restartTime;
+                gbsrv.MultiHome = _multiHome;
+                gbsrv.SpectatorOnlyPassword = _spectatorPassword;
+                addServer = gbsrv;
+                break;
+            case 3:
+                var armasrv = addServer as ArmaServer;
+                armasrv.ServerWorld = _serverWorld;
+                addServer = armasrv;
+                cred = new();
+                cred.UserName = _steamUser;
+                cred.Password = _steamPass;
+                cred.TFA = _steam2FA;
+                break;
+        }
 
         _ds.CloseSide();
-        addServer = _gss.SendSteamCMDAction(addServer, serverBaseDir, (ServerTypeEnum)selectedType.Item2);
-
+        addServer = _gss.SendSteamCMDAction(addServer, serverBaseDir, (ServerTypeEnum)selectedType.Item2, cred);
+        
         //TODO: Disabled downloading for speedy testing
         // await _ds.OpenAsync<ProcessConsoleDialog>("Download Game Server",
         //     new Dictionary<string, object>()
@@ -245,5 +349,23 @@
             errorText = "Failed to download server. (SteamCMD error)";
             showError = true;            
         }
+    }
+
+    private List<Tuple<string, int>> GetGamesList(bool existing = false)
+    {        
+        var list = new List<Tuple<string, int>>();
+        foreach (var item in Enum.GetValues(typeof(ServerTypeEnum)))
+        {
+            if ((int)item == 3 && existing == true)
+            {
+
+            }
+            else
+            {
+                list.Add(new Tuple<string, int>(Enum.GetName(typeof(ServerTypeEnum), item).Replace('_', ' '), (int)item));
+            }
+        }
+
+        return list;
     }
 }

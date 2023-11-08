@@ -18,7 +18,7 @@
         }
 
         public static string GetFilePath(string path, string fileName)
-        {
+        {            
             return Path.GetFullPath(fileName, path);
         }
 
@@ -31,6 +31,11 @@
             }
 
             return "";
+        }
+
+        public static string GetFileRootPath(string path)
+        {
+            return Path.GetDirectoryName(path) ?? "";
         }
     }
 }

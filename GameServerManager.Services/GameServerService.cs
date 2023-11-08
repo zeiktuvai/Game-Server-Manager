@@ -30,7 +30,7 @@ namespace GameServerManager.Services
         }
         
         //TODO: why am I doing it like this?
-        public GameServer SendSteamCMDAction(GameServer server, string serverBaseDir, ServerTypeEnum serverType)
+        public GameServer SendSteamCMDAction(GameServer server, string serverBaseDir, ServerTypeEnum serverType, CredentialRequest? credential = null)
         {
             string? path;
 
@@ -52,11 +52,14 @@ namespace GameServerManager.Services
                         DownloadPath = path,
                         SteamAppId = (server as ArmaServer).SteamAppId,
                         AnonymousLogin = true,
-                        SteamCMDPath = GlobalConstants.SteamCommandPath
+                        SteamCMDPath = GlobalConstants.SteamCommandPath,
+                        UserName = credential.UserName,
+                        Password = credential.Password,
+                        SteamGuardCode = credential.TFA
                     });
                     break;
             }
-
+            
             return server;
         }
 
@@ -117,9 +120,8 @@ namespace GameServerManager.Services
 
                         if (!List.Servers.Any(s => s.ServerPath == server.ServerPath))
                         {
-                            ArmaServerHelper.GetServerProperties(basePath);
-                            //amra3serverhelper.getserverinfo
-                            //_gsr.AddGameServer(server, ServerTypeEnum.Arma_3);
+                            ArmaServerHelper.GetServerProperties((ArmaServer)server, basePath);                            
+                            _gsr.AddGameServer(server, ServerTypeEnum.Arma_3);
                             UpdateGameServers();
                             return true;
                         }

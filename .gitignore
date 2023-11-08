@@ -364,3 +364,4 @@ FodyWeavers.xsd
 /GBServerManager2/LiteDb/Server.db
 /GBServerManager2/LiteDb/Server-log.db
 /GBServerManager2/SteamCMD
+/GameServerManager.Web/SteamCMD/steamcmd.exe
